@@ -51,7 +51,7 @@ void extract_data(struct pe_elem *elm, FILE *elemdb)
 {
 	char raw[13];
 	fgets(raw, 13, elemdb);
-	elm->weight = strtof(raw, NULL);
+	elm->weight = strtod(raw, NULL);
 }
 
 void to_next_line(FILE *f, int offset)

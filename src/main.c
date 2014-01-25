@@ -4,9 +4,9 @@ int main(void)
 {
 	FILE *f = NULL;
 	struct pe_elem elm;
-	elm.name[0] = 'x';
+	elm.name[0] = 'E';
 	elm.name[1] = 'u';
-	elm.name[2] = 'f';
+	elm.name[2] = ' ';
 
 	f = fopen("./elemdb.csv", "r");
 

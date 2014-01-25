@@ -7,7 +7,7 @@
 struct pe_elem {
 	char name[3];
 	int quantity;
-	float weight;
+	double weight;
 };
 
 int get_elem_weights(int elm_count, struct pe_elem *elm_vec);
