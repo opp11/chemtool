@@ -3,14 +3,18 @@
 
 #include <stdio.h>
 
-struct elem {
+struct pe_elem {
 	char name[3];
 	int quantity;
 	float weight;
 };
 
-int get_weight(int elm_count, struct elem *elm_vec);
+int get_elem_weights(int elm_count, struct pe_elem *elm_vec);
 
-void to_next_line(FILE *f);
+int get_weight(struct pe_elem *elm, FILE *elemdb);
+
+int walk_to_elem(char name[3], FILE *elemdb);
+
+void to_next_line(FILE *f, int offset);
 
 #endif /* __CHEMTOOL_H__ */
