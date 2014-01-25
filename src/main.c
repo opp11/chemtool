@@ -3,13 +3,14 @@
 int main(void)
 {
 	FILE *f = NULL;
-	char el[3] = {'E','u','\0'};
-	char val[10];
+	char raw[3] = {'E', 'u', ' '};
+	char w[13];
 	f = fopen("./elemdb.csv", "r");
-	
-	walk_to_elem(el, f);
-	fgets(val, 10, f);
-	printf(val);
+
+	walk_to_elem(raw, f);
+	fgetc(f);
+	fgets(w, 13, f);
+	printf("%s\n", w);	
 
 	fclose(f);
 	return 0;

@@ -24,24 +24,47 @@ int get_weight(struct pe_elem *elm, FILE *elemdb)
 	if (fgetc(elemdb) != ' ')
 		return -1;
 
-	
+	extract_data(elm, elemdb);
 
 	return 0;
 }
 
-void walk_to_elem(char name[3], FILE *elemdb)
+int walk_to_elem(char name[3], FILE *elemdb)
 {
+	char raw[4] = {0, 0, 0, 0};
+	char* resp;
+
+	resp = fgets(raw, 4, elemdb);
+	while (raw[0] != name[0] || raw[1] != name[1] || raw[2] != name[2]){
+		if (!resp)
+			//abort if there is a read error
+			return -1;
+		to_next_line(elemdb, 0);
+		resp = fgets(raw, 4, elemdb);
+	}
+
+	return 0;
+}
+
+void extract_data(struct pe_elem *elm, FILE *elemdb)
+{
+	char raw[14];
+	char crnt = fgetc(elemdb);
 	int i = 0;
 
-	//Walk down the file untill we have matched all of 'name'.
-	//Since everything should be ordered alphabetically, 
-	//we do not have to consider whether we are already past the target.
-	while (name[i]){
-		while (name[i] != fgetc(elemdb))
-			to_next_line(elemdb, i);
-
+	//extract the weight
+	while (crnt != ' '){
+		raw[i] = crnt;
+		i++;
+		crnt = fgetc(elemdb);
+	}
+	//pad the rest of raw with zeroes
+	while (i < 14){
+		raw[i] = '0';
 		i++;
 	}
+
+	elm->weight = strtof(raw, NULL);
 }
 
 void to_next_line(FILE *f, int offset)
