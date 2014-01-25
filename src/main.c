@@ -2,8 +2,13 @@
 
 int main(void)
 {
-	FILE *elemdb = NULL;
-	elemdb = fopen("./elemdb.csv", "r");
-	fclose(elemdb);
+	FILE *f = NULL;
+	f = fopen("./elemdb.csv", "r");
+	printf("%c", fgetc(f));
+	printf("%c\n", fgetc(f));
+	to_next_line(f);
+	printf("%c", fgetc(f));
+	printf("%c\n", fgetc(f));
+	fclose(f);
 	return 0;
 }
