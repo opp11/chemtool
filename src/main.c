@@ -2,7 +2,8 @@
 
 int main(void)
 {
-	FILE *elemdb = fopen("./elemdb.csv", "r");
+	FILE *elemdb = NULL;
+	elemdb = fopen("./elemdb.csv", "r");
 	fclose(elemdb);
 	return 0;
 }

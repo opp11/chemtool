@@ -15,5 +15,10 @@ OUTNAME=chemtool
 #Compiler flags
 CFLAGS=-o $(OUTDIR)/$(OUTNAME) -Wall
 
+#Normal build
 all:
-	$(CC) $(FILES) $(CFLAGS) 
+	$(CC) $(FILES) $(CFLAGS)
+
+#Debug build - use '$ make dbg'
+dbg:
+	$(CC) $(FILES) $(CFLAGS) -g
