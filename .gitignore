@@ -1,5 +1,8 @@
 #Ignore everything in the 'bin' directory.
 bin/
 
+#Except element database
+!bin/elemdb.csv
+
 #Furthermore ignore all .swp files
 *.swp
