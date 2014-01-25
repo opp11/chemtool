@@ -1,2 +1,5 @@
 #Ignore everything in the 'bin' directory.
 bin/
+
+#Furthermore ignore all .swp files
+*.swp
