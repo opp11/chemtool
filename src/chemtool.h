@@ -13,7 +13,7 @@ int get_elem_weights(int elm_count, struct pe_elem *elm_vec);
 
 int get_weight(struct pe_elem *elm, FILE *elemdb);
 
-int walk_to_elem(char name[3], FILE *elemdb);
+void walk_to_elem(char name[3], FILE *elemdb);
 
 void to_next_line(FILE *f, int offset);
 

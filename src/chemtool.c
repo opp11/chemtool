@@ -46,7 +46,7 @@ void walk_to_elem(char name[3], FILE *elemdb)
 
 void to_next_line(FILE *f, int offset)
 {
-	char crnti;
+	char crnt;
 	do {
 		crnt = fgetc(f);
 	} while (crnt != '\n' && crnt != EOF);
