@@ -3,17 +3,17 @@
 int main(void)
 {
 	FILE *f = NULL;
-	char raw[3] = {'d', 'u', ' '};
-	char w[13];
+	struct pe_elem elm;
+	elm.name[0] = 'x';
+	elm.name[1] = 'u';
+	elm.name[2] = 'f';
+
 	f = fopen("./elemdb.csv", "r");
 
-	if (walk_to_elem(raw, f)){
-		printf("Reached end of file before match\n");
-	} else {
-		fgetc(f);
-		fgets(w, 13, f);
-		printf("%s\n", w);
-	}	
+	if (get_weight(&elm, f))
+		printf("Could not get weight\n");
+	else
+		printf("%f\n", elm.weight);
 
 	fclose(f);
 	return 0;

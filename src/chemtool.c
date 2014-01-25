@@ -17,11 +17,12 @@ int get_elem_weights(int elm_count, struct pe_elem *elm_vec)
 
 int get_weight(struct pe_elem *elm, FILE *elemdb)
 {
-	walk_to_elem(elm->name, elemdb);
+	if (walk_to_elem(elm->name, elemdb))
+		return -1;
 
-	//We should be on a space right now, so check that.
+	//We should be on a semicolon right now, so check that.
 	//We also need to advance 1 anyway, so 'fgetc' also accomplishes that.
-	if (fgetc(elemdb) != ' ')
+	if (fgetc(elemdb) != ';')
 		return -1;
 
 	extract_data(elm, elemdb);
@@ -48,22 +49,8 @@ int walk_to_elem(char name[3], FILE *elemdb)
 
 void extract_data(struct pe_elem *elm, FILE *elemdb)
 {
-	char raw[14];
-	char crnt = fgetc(elemdb);
-	int i = 0;
-
-	//extract the weight
-	while (crnt != ' '){
-		raw[i] = crnt;
-		i++;
-		crnt = fgetc(elemdb);
-	}
-	//pad the rest of raw with zeroes
-	while (i < 14){
-		raw[i] = '0';
-		i++;
-	}
-
+	char raw[13];
+	fgets(raw, 13, elemdb);
 	elm->weight = strtof(raw, NULL);
 }
 
