@@ -1,9 +1,16 @@
 #include "db_read.h"
 
-//prototypes for private funcs
+//Fills out the data fields of a single pe_elem struct
+//by reading from the 'elemdb' file
 static int get_data(struct pe_elem *elm, FILE *elemdb);
+
+//Walks DOWN through the file 'elemdb' untill it reaches a mathcing name or EOF
 static int walk_to_elem(char name[3], FILE *elemdb);
+
+//Extracts the data from the current line of 'elemdb' and stores it in 'elm'
 static void extract_data(struct pe_elem *elm, FILE *elemdb);
+
+//Walks to the next line in the file 'f' and then 'offset' chars to the right
 static void to_next_line(FILE *f, int offset);
 
 int get_elem_weights(int elm_count, struct pe_elem *elm_vec)
@@ -51,10 +58,11 @@ static int walk_to_elem(char name[3], FILE *elemdb)
 	char* resp;
 
 	resp = fgets(raw, 4, elemdb);
+	//walk untill the names match
 	while (raw[0] != name[0] || raw[1] != name[1] || raw[2] != name[2]){
 		if (!resp)
 			//abort if there is a read error
-			//this most likely due to reacing EOF
+			//this is most likely due to reaching EOF
 			return EENAME;
 		to_next_line(elemdb, 0);
 		resp = fgets(raw, 4, elemdb);
@@ -73,10 +81,12 @@ static void extract_data(struct pe_elem *elm, FILE *elemdb)
 static void to_next_line(FILE *f, int offset)
 {
 	char crnt;
+	//walk to next line
 	do {
 		crnt = fgetc(f);
 	} while (crnt != '\n' && crnt != EOF);
 	
+	//walk to offset
 	if (crnt != EOF){
 		while (offset--)
 			fgetc(f);
