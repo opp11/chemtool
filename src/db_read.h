@@ -3,10 +3,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-
-#define EFOPEN 1
-#define EENAME 2
-#define EFORMAT 3
+#include "err_handling.h"
 
 struct pe_elem {
 	char name[3];

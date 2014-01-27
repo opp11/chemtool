@@ -45,7 +45,7 @@ static int get_data(struct pe_elem *elm, FILE *elemdb)
 	//We should be on a semicolon right now, so check that.
 	//We also need to advance 1 anyway, so 'fgetc' also accomplishes that.
 	if (fgetc(elemdb) != ';')
-		return EFORMAT;
+		return EDBFMT;
 
 	extract_data(elm, elemdb);
 

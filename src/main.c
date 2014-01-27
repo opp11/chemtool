@@ -1,4 +1,5 @@
 #include "db_read.h"
+#include "err_handling.h"
 
 int main(int argc, char** argv)
 {
@@ -16,7 +17,7 @@ int main(int argc, char** argv)
 		case EENAME:
 			printf("Could not find elem\n");
 			break;
-		case EFORMAT:
+		case EDBFMT:
 			printf("Database not formatted correctly\n");
 			break;
 		default://on success
