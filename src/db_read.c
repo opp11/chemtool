@@ -1,4 +1,4 @@
-#include "chemtool.h"
+#include "db_read.h"
 
 int get_elem_weights(int elm_count, struct pe_elem *elm_vec)
 {

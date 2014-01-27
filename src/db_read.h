@@ -1,5 +1,5 @@
-#ifndef __CHEMTOOL_H__
-#define __CHEMTOOL_H__
+#ifndef __DBREAD_H__
+#define __DBREAD_H__
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -24,4 +24,4 @@ void extract_data(struct pe_elem *elm, FILE *elemdb);
 
 void to_next_line(FILE *f, int offset);
 
-#endif /* __CHEMTOOL_H__ */
+#endif /* __DBREAD_H__ */
