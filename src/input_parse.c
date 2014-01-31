@@ -20,96 +20,124 @@ static inline int IS_LETTER(char c)
 	return IS_UPPER_LETTER(c) || IS_LOWER_LETTER(c);
 }
 
-static int parse_symbol(char sym);
-static void make_element(struct pe_elem *elm, char name[3], char quant[50]);
-static int handle_paren(int elm_i, struct pe_elem *elms);
 static int get_num_elems(char* in);
+static int handle_num(int *pos, char *in, struct pe_elem *crnt_elm);
+static int handle_elem(int *pos, char *in, struct pe_elem *crnt_elm);
+static int handle_paren(int *pos, char *in, struct pe_elem *crnt_elm);
+static void apply_paren_mult(int mult, int elm_count, struct pe_elem *crnt_elm);
 
 int parse_input(char *in, int num_elms, struct pe_elem *elms)
 {
-	int err;
-	while (*in){
-		err = parse_symbol(*in, elms);
-		if (err)
-			return err;
+	int err = 0;
+	int in_i = 0;
+	int elm_i = 0;
 
-		in++;
-	}
-
-	return 0;
-}
-
-static int parse_symbol(char sym, struct pe_elem *elms)
-{
-	static int elm_i = 0;
-	static int sym_i = 0;
-	static int quant_i = 0;
-	static char crnt_quant[50] = {'\0'};//might as well be prepared
-	static char crnt_name[3] = {' '};
-	
-	if (IS_NUM(sym)){
-		if (elm_i){
-			crnt_quant[quant_i] = sym;
-			quant_i++;
-		} else {
-			//we cannot start with a number so abort
-			//and report argument error if it happens
-			return EARGFMT;
-		}
-	} else if (IS_UPPER_LETTER(sym)){
-		if (elm_i){
-			make_element(&elms[elm_i], crnt_name, crnt_quant);	
+	while (in[in_i]){
+		if (IS_LETTER(in[in_i])){
+			err = handle_elem(&in_i, in, &elms[elm_i]);
 			elm_i++;
+		} else if (IS_NUM(in[in_i])){
+			err = handle_num(&in_i, in, &elms[elm_i]);
+		} else if (in[in_i] == ')'){
+			err = handle_paren(&in_i, in, &elms[elm_i]);
 		}
-		sym_i = 1;
-		quant_i = 0;
-		crnt_name[0] = sym;
-	} else if (IS_LOWER_LETTER(sym)){
-		if (sym_i < 3 && sym_i > 0){
-			crnt_name[sym_i] = sym;
-			sym_i++;
-		} else {
-			//An element name has a max length of 3 and lowecase
-			//letters can only appear after the first letter.
-			//Therefore if we are not within those bounds we won't
-			//able to find elem and so we report an element error.
-			return EENAME;
-		}
-	} else if (sym == ')'){
-		make_element(&elms[elm_i], crnt_name, crnt_quant);
-		handle_paren(elm_i, elms);
-	} else if (sym == '('){
-		//Do not do anything. If something is not right after the
-		//open paren the other checks will catch it.
-	} else {
-		//This symbol does not belong in a chemical formula
-		//so abort and return argument error.
-		return EARGFMT;
+		if (err)
+			//In case of any errors, abort and send error back
+			return err;
 	}
 
 	return 0;
 }
 
-static void make_element(struct pe_elem *elm, char name[3], char quant[50])
+static int handle_num(int *pos, char *in, struct pe_elem *crnt_elm)
+{
+	int i = 0;
+	char buffer[BUFSIZ] = {'\0'};
+
+	while (IS_NUM(in[*pos])){
+		buffer[i] = in[*pos];
+		i++;
+		*pos++;
+	}
+
+	crnt_elm->quantity = strtol(buffer, NULL, 10);
+
+	return 0;
+}
+
+static int handle_elem(int *pos, char *in, struct pe_elem *crnt_elm)
 {
 	int i = 0;
 
-	elm.name = name;
-	elm.quantity = strtol(quant, NULL, 10);
+	//First check if the first letter of the elem is uppercase
+	//and if not abort and return element error
+	if (IS_UPPER_LETTER(in[*pos])){
+		crnt_elm->name[i] = in[*pos];
+		i++;
+		*pos++;
+	} else {
+		return EENAME;
+	}
 
-	//reset name and quant
-	name[0] = ' ';
-	name[1] = ' ';
-	name[2] = ' ';
+	while (IS_LOWER_LETTER(in[*pos])){
+		if (i > 2)
+			//An element name cannot be longer than 3 letters,
+			//so if that happens abort and return element error.
+			return EENAME;
+		crnt_elm->name[i] = in[*pos];
+		i++;
+		*pos++;
+	}
 
-	while (i < 50)
-		quant[i] = '\0';	
+	return 0;
 }
 
-static int handle_paren(int elm_i, struct pe_elem *elms)
+static int handle_paren(int* pos, char* in, struct pe_elem *crnt_elm)
 {
+	int i = *pos;
+	int mult = 1;
 	int paren_lvl = 0;
-	
+	int elm_count = 0;
+
+	*pos++;
+	if (IS_NUM(in[*pos])){
+		struct pe_elem tmp;
+		handle_num(pos, in, &tmp);
+		mult = tmp.quantity;
+	}		
+
+	//walk backwards through the input string untill that matching
+	//start paren is found.
+	while (in[i] != '(' && paren_lvl == 0){
+		i--;
+		if (i < 0)
+			//No start paren was found so the arg is formatted
+			//wrong. Abort and return argument format error.
+			return EARGFMT;
+
+		//make sure nested parens are handled correct, by counting
+		//what 'nesting level' we are at.
+		if (in[i] == ')')
+			paren_lvl++;
+		else if (in[i] == '(')
+			paren_lvl--;
+		//Count how many element will be affected by the paren
+		else if (IS_UPPER_LETTER(in[i]))
+			elm_count++;
+	}
+
+	apply_paren_mult(mult, elm_count, crnt_elm);
+
+	return 0;
+}
+
+static void apply_paren_mult(int mult, int elm_count, struct pe_elem *crnt_elm)
+{
+	while (elm_count){
+		crnt_elm->quantity *= mult;
+		--elm_count;
+		--crnt_elm;
+	}
 }
 
 static int get_num_elems(char *in)
@@ -130,7 +158,7 @@ static int get_num_elems(char *in)
 
 struct pe_elem *create_elm_vec(char* in)
 {
-	return calloc(get_num_elems(in), sizeof(struct pe_elem);
+	return calloc(get_num_elems(in), sizeof(struct pe_elem));
 }
 
 void destroy_elm_vec(struct pe_elem *vec)
