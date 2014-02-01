@@ -7,7 +7,9 @@
 
 int parse_input(char *in, int num_elms, struct pe_elem *elms);
 
-struct pe_elem *create_elm_vec(char *in);
+int get_num_elems(char* in);
+
+struct pe_elem *create_elm_vec(int elm_count);
 void destroy_elm_vec(struct pe_elem *vec);
 
 #endif /* __INPARSE_H__ */
