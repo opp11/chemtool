@@ -27,7 +27,7 @@ void run_chemtool(int arg_count, char** arg_vec)
 		goto exit;
 
 	for (i = 0; i < elm_count; i++){
-		tot_weight += elms[i].weight;
+		tot_weight += elms[i].weight * elms[i].quantity;
 	}
 	printf("M = %f\n", tot_weight);
 
