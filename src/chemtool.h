@@ -5,7 +5,6 @@
 #include "err_handling.h"
 #include "input_parse.h"
 
-void run_chemtool(int arg_count, char** arg_vec);
-void sort_elems(int elm_count, struct pe_elem *elms);
+int run_chemtool(char *in, int flags);
 
 #endif /* __CHEMTOOL_H__ */
