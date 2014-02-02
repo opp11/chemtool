@@ -4,13 +4,12 @@
 
 int main(int argc, char** argv)
 {
-	char* in = "((C2He32Uub)2H120";
-	int elm_count = get_num_elems(in);
+	int elm_count = get_num_elems(argv[1]);
 	struct pe_elem *elms = create_elm_vec(elm_count);
 	int i = 0;
 	int err = 0;
 
-	err = parse_input(in, elm_count, elms);
+	err = parse_input(argv[1], elm_count, elms);
 
 	if (err == 0){
 		while (i < elm_count){
