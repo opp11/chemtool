@@ -1,25 +1,10 @@
 #include "db_read.h"
 #include "err_handling.h"
 #include "input_parse.h"
+#include "chemtool.h"
 
 int main(int argc, char** argv)
 {
-	int elm_count = get_num_elems(argv[1]);
-	struct pe_elem *elms = create_elm_vec(elm_count);
-	int i = 0;
-	int err = 0;
-
-	err = parse_input(argv[1], elm_count, elms);
-
-	if (err == 0){
-		while (i < elm_count){
-			printf("%s %i\n", elms[i].name, elms[i].quantity);
-			i++;
-		}
-	} else {
-		print_err(err);
-	}
-
-	destroy_elm_vec(elms);
+	run_chemtool(argc, argv);
 	return 0;
 }
