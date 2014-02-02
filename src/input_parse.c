@@ -25,6 +25,7 @@ static int handle_elem(int *pos, char *in, struct pe_elem *crnt_elm);
 static int handle_paren(int *pos, char *in, struct pe_elem *crnt_elm);
 static void apply_paren_mult(int mult, int elm_count, struct pe_elem *crnt_elm);
 static void prepare_elms(int num_elms, struct pe_elem *elms);
+static int parens_faulty(char *in);
 
 int parse_input(char *in, int num_elms, struct pe_elem *elms)
 {
@@ -32,6 +33,9 @@ int parse_input(char *in, int num_elms, struct pe_elem *elms)
 	int in_i = 0;
 	int elm_i = 0;
 	int first_elem = 1;
+
+	if (parens_faulty(in))
+		return EARGFMT;
 
 	prepare_elms(num_elms, elms);
 	while (in[in_i]){
@@ -114,6 +118,8 @@ static int handle_paren(int* pos, char* in, struct pe_elem *crnt_elm)
 	int elm_count = 0;
 
 	(*pos)++;
+	//get the value of the multiplier for this paren now,
+	//so we can apply it later
 	if (IS_NUM(in[*pos])){
 		struct pe_elem tmp;
 		handle_num(pos, in, &tmp);
@@ -124,11 +130,6 @@ static int handle_paren(int* pos, char* in, struct pe_elem *crnt_elm)
 	//start paren is found.
 	i--;
 	while (in[i] != '(' || paren_lvl > 0){
-		if (i < 0)
-			//No start paren was found so the arg is formatted
-			//wrong. Abort and return argument format error.
-			return EARGFMT;
-
 		//make sure nested parens are handled correct, by counting
 		//what 'nesting level' we are at.
 		if (in[i] == ')')
@@ -148,6 +149,8 @@ static int handle_paren(int* pos, char* in, struct pe_elem *crnt_elm)
 
 static void apply_paren_mult(int mult, int elm_count, struct pe_elem *crnt_elm)
 {
+	if (mult == 1)
+		return;
 	while (elm_count){
 		crnt_elm->quantity *= mult;
 		--elm_count;
@@ -164,6 +167,20 @@ static void prepare_elms(int num_elms, struct pe_elem *elms)
 		elms[i].name[2] = ' ';
 		elms[i].quantity = 1;
 	}
+}
+
+static int parens_faulty(char *in)
+{
+	int paren_lvl = 0;
+	while (*in){
+		if ((*in) == '(')
+			paren_lvl++;
+		else if ((*in) == ')')
+			paren_lvl--;
+
+		in++;
+	}
+	return paren_lvl;
 }
 
 int get_num_elems(char *in)
