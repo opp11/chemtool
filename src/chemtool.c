@@ -1,6 +1,6 @@
 #include "chemtool.h"
 
-int run_chemtool(char* in, int flags)
+int run_chemtool(char* in)
 {
 	int elm_count;
 	struct pe_elem *elms;
@@ -23,8 +23,8 @@ int run_chemtool(char* in, int flags)
 		printf("%s\t%i\t%f\t%s\n", elms[i].sname, elms[i].quantity, 
 			elms[i].weight, elms[i].lname);
 	}
-	printf("----------------------------------------\n");
-	printf("Total Molar mass: %f\n", tot_weight);
+	printf("--------------------------------------------------\n");
+	printf("Total Molar mass: %f\n\n", tot_weight);
 
 exit:
 	print_err(err);

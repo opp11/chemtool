@@ -5,6 +5,6 @@
 #include "err_handling.h"
 #include "input_parse.h"
 
-int run_chemtool(char *in, int flags);
+int run_chemtool(char *in);
 
 #endif /* __CHEMTOOL_H__ */

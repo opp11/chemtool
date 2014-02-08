@@ -2,5 +2,5 @@
 
 int main(int argc, char** argv)
 {
-	return run_chemtool(argv[1], 0);
+	return run_chemtool(argv[1]);
 }
