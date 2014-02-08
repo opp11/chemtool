@@ -55,15 +55,20 @@ static int get_data(struct pe_elem *elm, FILE *elemdb)
 static int walk_to_elem(char name[3], FILE *elemdb)
 {
 	char raw[4] = {0, 0, 0, 0};
+	int did_rewind = 0;
 	char* resp;
 
 	resp = fgets(raw, 4, elemdb);
 	//walk untill the names match
 	while (raw[0] != name[0] || raw[1] != name[1] || raw[2] != name[2]){
-		if (!resp)
-			//abort if there is a read error
-			//this is most likely due to reaching EOF
-			return EENAME;
+		if (!resp){
+			if (!did_rewind)
+				rewind(elemdb);
+			else 
+				//if we walked through the whole file
+				//then abort and return element not found
+				return EENAME;
+		}
 		to_next_line(elemdb, 0);
 		resp = fgets(raw, 4, elemdb);
 	}
