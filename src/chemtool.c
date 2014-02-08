@@ -14,14 +14,14 @@ int run_chemtool(char* in, int flags)
 	err = parse_input(in, elm_count, elms);
 	if (err)
 		goto exit;
-	err = get_elem_weights(elm_count, elms);
+	err = get_elem_data(elm_count, elms);
 	if (err)
 		goto exit;
 
 	for (i = 0; i < elm_count; i++){
 		tot_weight += elms[i].weight * elms[i].quantity;
-		printf("%s\t%i\t%f\n", elms[i].name, elms[i].quantity, 
-			elms[i].weight);
+		printf("%s\t%i\t%f\t%s\n", elms[i].sname, elms[i].quantity, 
+			elms[i].weight, elms[i].lname);
 	}
 	printf("----------------------------------------\n");
 	printf("Total Molar mass: %f\n", tot_weight);

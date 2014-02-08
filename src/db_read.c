@@ -2,18 +2,22 @@
 
 //Fills out the data fields of a single pe_elem struct
 //by reading from the 'elemdb' file
-static int get_data(struct pe_elem *elm, FILE *elemdb);
+static int get_single_data(struct pe_elem *elm, FILE *elemdb);
 
 //Walks DOWN through the file 'elemdb' untill it reaches a mathcing name or EOF
 static int walk_to_elem(char name[3], FILE *elemdb);
 
-//Extracts the data from the current line of 'elemdb' and stores it in 'elm'
-static void extract_data(struct pe_elem *elm, FILE *elemdb);
-
 //Walks to the next line in the file 'f' and then 'offset' chars to the right
 static void to_next_line(FILE *f, int offset);
 
-int get_elem_weights(int elm_count, struct pe_elem *elm_vec)
+//Values should be seperated by a semicolon. This returns 0 if we are on a
+//semicolo now and 1 if we are not. Also moves 1 char forward in the file.
+static inline int conf_septor(FILE *f)
+{
+	return (fgetc(f) != ';');
+}
+
+int get_elem_data(int elm_count, struct pe_elem *elm_vec)
 {
 	FILE *elemdb = NULL;
 	int i = 0;
@@ -26,28 +30,29 @@ int get_elem_weights(int elm_count, struct pe_elem *elm_vec)
 	}
 
 	for (; i < elm_count; i++){
-		err = get_data(&elm_vec[i], elemdb);
+		err = get_single_data(&elm_vec[i], elemdb);
 		
 		//abort if an error was returned
 		if (err)
-			break;
+			goto exit;
 	}
 
+exit:
 	fclose(elemdb);
 	return err;
 }
 
-static int get_data(struct pe_elem *elm, FILE *elemdb)
+static int get_single_data(struct pe_elem *elm, FILE *elemdb)
 {
-	if (walk_to_elem(elm->name, elemdb))
+	if (walk_to_elem(elm->sname, elemdb))
 		return EENAME;
 
-	//We should be on a semicolon right now, so check that.
-	//We also need to advance 1 anyway, so 'fgetc' also accomplishes that.
-	if (fgetc(elemdb) != ';')
+	if (conf_septor(elemdb))
 		return EDBFMT;
-
-	extract_data(elm, elemdb);
+	fscanf(elemdb, "%lf", &elm->weight);
+	if (conf_septor(elemdb))
+		return EDBFMT;
+	fscanf(elemdb, "%13s", elm->lname);
 
 	return 0;
 }
@@ -60,27 +65,22 @@ static int walk_to_elem(char name[3], FILE *elemdb)
 
 	resp = fgets(raw, 4, elemdb);
 	//walk untill the names match
-	while (raw[0] != name[0] || raw[1] != name[1] || raw[2] != name[2]){
+	while (strncmp(name, raw, 3)){
+		to_next_line(elemdb, 0);
+		resp = fgets(raw, 4, elemdb);
 		if (!resp){
-			if (!did_rewind)
+			if (!did_rewind){
 				rewind(elemdb);
-			else 
+				did_rewind = 1;
+			} else { 
 				//if we walked through the whole file
 				//then abort and return element not found
 				return EENAME;
+			}
 		}
-		to_next_line(elemdb, 0);
-		resp = fgets(raw, 4, elemdb);
 	}
 
 	return 0;
-}
-
-static void extract_data(struct pe_elem *elm, FILE *elemdb)
-{
-	char raw[13];
-	fgets(raw, 13, elemdb);
-	elm->weight = strtod(raw, NULL);
 }
 
 static void to_next_line(FILE *f, int offset)

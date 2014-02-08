@@ -3,17 +3,19 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include "err_handling.h"
 
 struct pe_elem {
-	char name[3];
+	char sname[4];
+	char lname[14];
 	int quantity;
 	double weight;
 };
 
 /*
  *Fills out the 'weight' field for the pe_elem structs provided. The name of
- *the element to find is read from the the pe_elem struct's 'name' field
+ *the element to find is read from the the pe_elem struct's 'sname' field
  *and must be filled out when the function is called.
  *If an element cannot be found within the database, the function will abort
  *the read and return. Structs filled prior to the one causing the error
@@ -29,6 +31,6 @@ struct pe_elem {
  *	      EFORMAT if the database file is not formatted right / corrupted.
  *	      EENAME if an element could not be found.
  */
-int get_elem_weights(int elm_count, struct pe_elem *elm_vec);
+int get_elem_data(int elm_count, struct pe_elem *elm_vec);
 
 #endif /* __DBREAD_H__ */

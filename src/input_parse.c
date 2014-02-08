@@ -90,7 +90,7 @@ static int handle_elem(int *pos, char *in, struct pe_elem *crnt_elm)
 	//First check if the first letter of the elem is uppercase
 	//and if not abort and return element error
 	if (IS_UPPER_LETTER(in[*pos])){
-		crnt_elm->name[i] = in[*pos];
+		crnt_elm->sname[i] = in[*pos];
 		i++;
 		(*pos)++;
 	} else {
@@ -102,7 +102,7 @@ static int handle_elem(int *pos, char *in, struct pe_elem *crnt_elm)
 			//An element name cannot be longer than 3 letters,
 			//so if that happens abort and return element error.
 			return EENAME;
-		crnt_elm->name[i] = in[*pos];
+		crnt_elm->sname[i] = in[*pos];
 		i++;
 		(*pos)++;
 	}
@@ -162,9 +162,10 @@ static void prepare_elms(int num_elms, struct pe_elem *elms)
 {
 	int i;
 	for (i = 0; i < num_elms; i++){
-		elms[i].name[0] = ' ';
-		elms[i].name[1] = ' ';
-		elms[i].name[2] = ' ';
+		elms[i].sname[0] = ' ';
+		elms[i].sname[1] = ' ';
+		elms[i].sname[2] = ' ';
+		elms[i].sname[3] = '\0';
 		elms[i].quantity = 1;
 	}
 }
