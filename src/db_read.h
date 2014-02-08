@@ -4,17 +4,14 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "chemtool.h"
 #include "err_handling.h"
 
-struct pe_elem {
-	char sname[4];
-	char lname[14];
-	int quantity;
-	double weight;
-};
+struct pe_elem;
+struct elem_vec;
 
 /*
- *Fills out the 'weight' field for the pe_elem structs provided. The name of
+ *Fills out the data fields of the provided elem_vec struct. The name of
  *the element to find is read from the the pe_elem struct's 'sname' field
  *and must be filled out when the function is called.
  *If an element cannot be found within the database, the function will abort
@@ -22,8 +19,7 @@ struct pe_elem {
  *will have the correct values in their 'weight' fields.
  *
  *params:
- *	elm_count - The number of elements to get the weights of.
- *	elm_vec   - Pointer to an array of pe_elem structs to fill out.
+ *	evec - Pointer to an array of pe_elem structs to fill out.
  *
  *returns:
  *	int - 0 on succes.
@@ -31,6 +27,6 @@ struct pe_elem {
  *	      EFORMAT if the database file is not formatted right / corrupted.
  *	      EENAME if an element could not be found.
  */
-int get_elem_data(int elm_count, struct pe_elem *elm_vec);
+int get_elem_data(struct elem_vec *evec);
 
 #endif /* __DBREAD_H__ */

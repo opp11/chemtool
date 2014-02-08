@@ -17,7 +17,7 @@ static inline int conf_septor(FILE *f)
 	return (fgetc(f) != ';');
 }
 
-int get_elem_data(int elm_count, struct pe_elem *elm_vec)
+int get_elem_data(struct elem_vec *evec)
 {
 	FILE *elemdb = NULL;
 	int i = 0;
@@ -29,8 +29,8 @@ int get_elem_data(int elm_count, struct pe_elem *elm_vec)
 		return EFOPEN;
 	}
 
-	for (; i < elm_count; i++){
-		err = get_single_data(&elm_vec[i], elemdb);
+	for (; i < evec->size; i++){
+		err = get_single_data(&evec->elms[i], elemdb);
 		
 		//abort if an error was returned
 		if (err)
