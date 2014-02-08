@@ -14,7 +14,6 @@ void print_err(int err)
 		break;
 	case EARGFMT:
 		printf("Input not formatted correctly.\n");
-		printf("Use chemtool --help for help on how to use the program.\n");
 		break;
 	}
 }
