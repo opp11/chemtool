@@ -22,7 +22,8 @@ static inline int IS_LETTER(char c)
 
 static int handle_num(int *pos, char *in, struct pe_elem *crnt_elm);
 static int handle_elem(int *pos, char *in, struct pe_elem *crnt_elm);
-static int handle_paren(int *pos, char *in, struct pe_elem *crnt_elm);
+static int handle_start_paren(int *pos, char *in);
+static int handle_end_paren(int *pos, char *in, struct pe_elem *crnt_elm);
 static void apply_paren_mult(int mult, int elm_count, struct pe_elem *crnt_elm);
 static void prepare_elms(int num_elms, struct pe_elem *elms);
 static int parens_faulty(char *in);
@@ -48,9 +49,9 @@ int parse_input(char *in, int num_elms, struct pe_elem *elms)
 		} else if (IS_NUM(in[in_i])){
 			err = handle_num(&in_i, in, &elms[elm_i]);
 		} else if (in[in_i] == ')'){
-			err = handle_paren(&in_i, in, &elms[elm_i]);
+			err = handle_end_paren(&in_i, in, &elms[elm_i]);
 		} else if (in[in_i] == '('){
-			in_i++;
+			err = handle_start_paren(&in_i, in);
 		} else {
 			err = EARGFMT;
 		}
@@ -110,7 +111,13 @@ static int handle_elem(int *pos, char *in, struct pe_elem *crnt_elm)
 	return 0;
 }
 
-static int handle_paren(int* pos, char* in, struct pe_elem *crnt_elm)
+static int handle_start_paren(int *pos, char *in)
+{
+	(*pos)++;
+	return IS_UPPER_LETTER(in[*pos]) ? 0 : EARGFMT;
+}
+
+static int handle_end_paren(int *pos, char *in, struct pe_elem *crnt_elm)
 {
 	int i = *pos;
 	int mult = 1;
