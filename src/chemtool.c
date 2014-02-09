@@ -35,7 +35,7 @@ struct elem_vec *create_elm_vec(char* in)
 	return out;
 }
 
-struct elem_vec *shorten_elm_vec(struct elem_vec *vec)
+int shorten_elm_vec(struct elem_vec *vec)
 {
 	int crnt_e = 0;
 	int new_size = vec->size;
@@ -47,18 +47,18 @@ struct elem_vec *shorten_elm_vec(struct elem_vec *vec)
 	}
 	if (new_size == vec->size)
 		//no elems were grouped so no need to shorten
-		return vec;
+		return 0;
 
 	new_elms = calloc(new_size, sizeof(struct pe_elem));
 	if (!new_elms)
-		return NULL;
+		return EOOMEM;
 	
 	transfer_elems(new_elms, vec);
 	free(vec->elms);
 	vec->elms = new_elms;
 	vec->size = new_size;
 
-	return vec;
+	return 0;
 }
 
 void destroy_elm_vec(struct elem_vec *vec)
@@ -75,11 +75,17 @@ int run_chemtool(char* in)
 	double tot_weight = 0.0;
 
 	evec = create_elm_vec(in);
+	if (!evec){
+		err = EOOMEM;
+		goto exit;
+	}
 
 	err = parse_input(in, evec);
 	if (err)
 		goto exit;
-	evec = shorten_elm_vec(evec);
+	err = shorten_elm_vec(evec);
+	if (err)
+		goto exit;
 	err = get_elem_data(evec);
 	if (err)
 		goto exit;

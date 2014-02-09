@@ -15,5 +15,7 @@ void print_err(int err)
 	case EARGFMT:
 		printf("Input not formatted correctly.\n");
 		break;
+	case EOOMEM:
+		printf("Ran out of RAM while running the program\n");
 	}
 }

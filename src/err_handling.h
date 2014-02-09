@@ -7,6 +7,7 @@
 #define EENAME  2 //Could not find element
 #define EDBFMT  3 //Data is formatted wrong
 #define EARGFMT 4 //Argument is formatted wrong
+#define EOOMEM  5 //Out of memory
 
 /*
  *Prints an error message for the provided error code.

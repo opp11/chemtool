@@ -33,18 +33,18 @@ struct elem_vec *create_elm_vec(char *in);
 
 /*
  *Shortens the elem_vec by grouping dublicate elements. If dublicates are
- *found then 'elms' and 'size' are modified. On success returns the new 
- *elem_vec and on failure returns NULL, at which point the elem_vec should be
- *considered ruined and therefore destroyed by a call to 'destroy_elm_vec'.
+ *found then 'elms' and 'size' are modified. On return of EOOMEM the elem_vec
+ *should be considered ruined and therefore destroyed by a call to
+ *'destroy_elm_vec'.
  *
  *params:
  *	evec - The elem_vec to shorten. Will be modified.
  *
  *returns:
- *	struct elem_vec* - pointer to the new shortened elem_vec on success.
- *	                   NULL on failure.
+ *	int - 0 on success.
+ *	      EOOMEM on failure to allocate new elem_vec.
  */
-struct elem_vec *shorten_elm_vec(struct elem_vec *evec);
+int shorten_elm_vec(struct elem_vec *evec);
 
 /*
  *Frees the memory previously allocated by a call to 'create_elm_vec'.
