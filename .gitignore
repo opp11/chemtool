@@ -1,4 +1,7 @@
+#Ignore everything in the bin/ dir
+#except the database file
 bin/**
 !bin/elemdb.csv
 
+#Also ignore all swap files if found
 *.swp
