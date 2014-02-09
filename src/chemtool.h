@@ -57,6 +57,21 @@ int shorten_elm_vec(struct elem_vec *evec);
  */
 void destroy_elm_vec(struct elem_vec *vec);
 
+/*
+ *Runs the chemtool program on the input string 'in'. On any error it 
+ *immediately aborts, prints an error message and returns the error code.
+ *
+ *params:
+ *	in - The input string containing a chemical formula.
+ *
+ *returns:
+ *	int - 0 on success.
+ *	      EFOPEN if the database file could not be found.
+ *	      EFORMAT if the database file is not formatted right / corrupted.
+ *	      EENAME if an element could not be found.
+ *	      EARGFMT if the formula is formatted wrong.
+ *	      EOOMEM on failure to allocate new elem_vec.
+ */
 int run_chemtool(char *in);
 
 #endif /* __CHEMTOOL_H__ */
