@@ -92,12 +92,12 @@ int run_chemtool(char* in)
 
 	for (i = 0; i < evec->size; i++){
 		tot_weight += evec->elms[i].weight * evec->elms[i].quant;
-		printf("%s\t%i\t%f\t%s\n", evec->elms[i].sname, 
+		printf("%s%6i\t%10f g/mol\t%s\n", evec->elms[i].sname, 
 			evec->elms[i].quant,	evec->elms[i].weight, 
 			evec->elms[i].lname);
 	}
 	printf("--------------------------------------------------\n");
-	printf("Total Molar mass: %f\n\n", tot_weight);
+	printf("Total Molar mass: %f g/mol\n\n", tot_weight);
 
 exit:
 	print_err(err);

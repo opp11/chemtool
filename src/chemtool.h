@@ -2,6 +2,8 @@
 #define __CHEMTOOL_H__
 
 #include <ctype.h>
+#include <stdio.h>
+#include <string.h>
 #include "db_read.h"
 #include "err_handling.h"
 #include "input_parse.h"
