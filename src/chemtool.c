@@ -50,8 +50,10 @@ int shorten_elm_vec(struct elem_vec *vec)
 		return 0;
 
 	new_elms = calloc(new_size, sizeof(struct pe_elem));
-	if (!new_elms)
+	if (!new_elms){
+		print_err(EOOMEM, "not enough unused RAM.");
 		return EOOMEM;
+	}
 	
 	transfer_elems(new_elms, vec);
 	free(vec->elms);
@@ -77,6 +79,7 @@ int run_chemtool(char* in)
 	evec = create_elm_vec(in);
 	if (!evec){
 		err = EOOMEM;
+		print_err(EOOMEM, "input too long and/or not enough unused RAM.");
 		goto exit;
 	}
 
@@ -100,7 +103,6 @@ int run_chemtool(char* in)
 	printf("Total Molar mass: %f g/mol\n\n", tot_weight);
 
 exit:
-	print_err(err);
 	destroy_elm_vec(evec);
 	return err;
 }

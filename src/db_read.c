@@ -5,7 +5,7 @@
 static int get_single_data(struct pe_elem *elm, FILE *elemdb);
 
 //Walks DOWN through the file 'elemdb' untill it reaches a mathcing name or EOF
-static int walk_to_elem(char name[3], FILE *elemdb);
+static int walk_to_elem(char name[4], FILE *elemdb);
 
 //Walks to the next line in the file 'f' and then 'offset' chars to the right
 static void to_next_line(FILE *f, int offset);
@@ -26,6 +26,7 @@ int get_elem_data(struct elem_vec *evec)
 	elemdb = fopen("./elemdb.csv", "r");
 	//abort on failure to open
 	if (!elemdb){
+		print_err(EFOPEN, "./elemdb.csv");
 		return EFOPEN;
 	}
 
@@ -44,20 +45,26 @@ exit:
 
 static int get_single_data(struct pe_elem *elm, FILE *elemdb)
 {
-	if (walk_to_elem(elm->sname, elemdb))
+	if (walk_to_elem(elm->sname, elemdb)){
+		print_err(EENAME, elm->sname);
 		return EENAME;
+	}
 
-	if (conf_septor(elemdb))
+	if (conf_septor(elemdb)){
+		print_err(EDBFMT, "missing a seperating semicolon.");
 		return EDBFMT;
+	}
 	fscanf(elemdb, "%lf", &elm->weight);
-	if (conf_septor(elemdb))
+	if (conf_septor(elemdb)){
+		print_err(EDBFMT, "missing a seperating semicolon.");
 		return EDBFMT;
+	}
 	fscanf(elemdb, "%13s", elm->lname);
 
 	return 0;
 }
 
-static int walk_to_elem(char name[3], FILE *elemdb)
+static int walk_to_elem(char name[4], FILE *elemdb)
 {
 	char raw[4] = {0, 0, 0, 0};
 	int did_rewind = 0;

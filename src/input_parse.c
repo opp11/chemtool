@@ -15,8 +15,10 @@ int parse_input(char *in, struct elem_vec *evec)
 	int elm_i = 0;
 	int first_elem = 1;
 
-	if (parens_faulty(in))
+	if (parens_faulty(in)){
+		print_err(EARGFMT, "the parentheses do not match.");
 		return EARGFMT;
+	}
 
 	prepare_elms(evec);
 	while (in[in_i]){
@@ -33,6 +35,7 @@ int parse_input(char *in, struct elem_vec *evec)
 		} else if (in[in_i] == '('){
 			err = handle_start_paren(&in_i, in);
 		} else {
+			print_err(EARGFMT, "unrecognised character. Please only use letters, numbers and parantheses.");
 			err = EARGFMT;
 		}
 		if (err)
@@ -48,10 +51,13 @@ static int handle_num(int *pos, char *in, struct pe_elem *crnt_elm)
 	int i = 0;
 	char buffer[BUFSIZ] = {'\0'};
 
-	if (*pos == 0)
+	if (*pos == 0){
 		//A chemical formula cannot start with a number (for now...),
 		//so abort and return argument format error
+		print_err(EARGFMT, 
+			"the chemical formula cannot begin with a number.");
 		return EARGFMT;
+	}
 
 	while (isdigit(in[*pos])){
 		buffer[i] = in[*pos];
@@ -75,14 +81,17 @@ static int handle_elem(int *pos, char *in, struct pe_elem *crnt_elm)
 		i++;
 		(*pos)++;
 	} else {
+		print_err(EENAME, "must start with an uppercase letter");
 		return EENAME;
 	}
 
 	while (islower(in[*pos])){
-		if (i > 2)
+		if (i > 2){
 			//An element name cannot be longer than 3 letters,
 			//so if that happens abort and return element error.
+			print_err(EENAME, "cannot be longer than 3 letters");
 			return EENAME;
+		}
 		crnt_elm->sname[i] = in[*pos];
 		i++;
 		(*pos)++;
@@ -94,7 +103,13 @@ static int handle_elem(int *pos, char *in, struct pe_elem *crnt_elm)
 static int handle_start_paren(int *pos, char *in)
 {
 	(*pos)++;
-	return isupper(in[*pos]) ? 0 : EARGFMT;
+	if (isupper(in[*pos])){
+		return 0;
+	} else {
+		print_err(EARGFMT, 
+			"a start paren must be followed by a new element.");
+		return EARGFMT;
+	}
 }
 
 static int handle_end_paren(int *pos, char *in, struct pe_elem *crnt_elm)

@@ -1,21 +1,22 @@
 #include "err_handling.h"
 
-void print_err(int err)
+void print_err(int err, char* msg)
 {
 	switch(err){
 	case EFOPEN:
-		printf("Could not open the element database.\n");
+		fprintf(stderr, "Could not open the element database. Expected at: %s\n", msg);
 		break;
 	case EENAME:
-		printf("Could not find one of the elements.\n");
+		fprintf(stderr, "Could not find element: %s\n", msg);
 		break;
 	case EDBFMT:
-		printf("Database not formatted correctly.\n");
+		fprintf(stderr, "Database not as expected: %s\n", msg);
 		break;
 	case EARGFMT:
-		printf("Input not formatted correctly.\n");
+		fprintf(stderr, "Input not formatted correctly: %s\n", msg);
 		break;
 	case EOOMEM:
-		printf("Ran out of RAM while running the program\n");
+		fprintf(stderr, "Ran out of RAM while running the program: %s\n", msg);
+		break;
 	}
 }
