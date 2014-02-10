@@ -1,6 +1,6 @@
 #include "err_handling.h"
 
-void print_err(int err, char* msg)
+void print_err(int err, const char* msg)
 {
 	switch(err){
 	case EFOPEN:

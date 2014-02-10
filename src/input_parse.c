@@ -1,14 +1,14 @@
 #include "input_parse.h"
 
-static int handle_num(int *pos, char *in, struct pe_elem *crnt_elm);
-static int handle_elem(int *pos, char *in, struct pe_elem *crnt_elm);
-static int handle_start_paren(int *pos, char *in);
-static int handle_end_paren(int *pos, char *in, struct pe_elem *crnt_elm);
+static int handle_num(int *pos, const char *in, struct pe_elem *crnt_elm);
+static int handle_elem(int *pos, const char *in, struct pe_elem *crnt_elm);
+static int handle_start_paren(int *pos, const char *in);
+static int handle_end_paren(int *pos, const char *in, struct pe_elem *crnt_elm);
 static void apply_paren_mult(int mult, int elm_count, struct pe_elem *crnt_elm);
 static void prepare_elms(struct elem_vec *evec);
-static int parens_faulty(char *in);
+static int parens_faulty(const char *in);
 
-int parse_input(char *in, struct elem_vec *evec)
+int parse_input(const char *in, struct elem_vec *evec)
 {
 	int err = 0;
 	int in_i = 0;
@@ -46,7 +46,7 @@ int parse_input(char *in, struct elem_vec *evec)
 	return 0;
 }
 
-static int handle_num(int *pos, char *in, struct pe_elem *crnt_elm)
+static int handle_num(int *pos, const char *in, struct pe_elem *crnt_elm)
 {
 	int i = 0;
 	char buffer[BUFSIZ] = {'\0'};
@@ -70,7 +70,7 @@ static int handle_num(int *pos, char *in, struct pe_elem *crnt_elm)
 	return 0;
 }
 
-static int handle_elem(int *pos, char *in, struct pe_elem *crnt_elm)
+static int handle_elem(int *pos, const char *in, struct pe_elem *crnt_elm)
 {
 	int i = 0;
 
@@ -100,7 +100,7 @@ static int handle_elem(int *pos, char *in, struct pe_elem *crnt_elm)
 	return 0;
 }
 
-static int handle_start_paren(int *pos, char *in)
+static int handle_start_paren(int *pos, const char *in)
 {
 	(*pos)++;
 	if (isupper(in[*pos])){
@@ -112,7 +112,7 @@ static int handle_start_paren(int *pos, char *in)
 	}
 }
 
-static int handle_end_paren(int *pos, char *in, struct pe_elem *crnt_elm)
+static int handle_end_paren(int *pos, const char *in, struct pe_elem *crnt_elm)
 {
 	int i = *pos;
 	int mult = 1;
@@ -172,7 +172,7 @@ static void prepare_elms(struct elem_vec *evec)
 	}
 }
 
-static int parens_faulty(char *in)
+static int parens_faulty(const char *in)
 {
 	int paren_lvl = 0;
 	while (*in){

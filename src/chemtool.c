@@ -1,6 +1,6 @@
 #include "chemtool.h"
 
-int process_input(char* in, struct elem_vec *evec)
+int process_input(const char* in, struct elem_vec *evec)
 {
 	int err = 0;
 

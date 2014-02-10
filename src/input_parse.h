@@ -22,6 +22,6 @@
  *	      EENAME if an element will not exist in the database.
  *	      EARGFMT if the formula is formatted wrong.
  */
-int parse_input(char *in, struct elem_vec *evec);
+int parse_input(const char *in, struct elem_vec *evec);
 
 #endif /* __INPARSE_H__ */

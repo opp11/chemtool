@@ -26,7 +26,7 @@
  *	      EARGFMT if the formula is formatted wrong.
  *	      EOOMEM on memory failure.
  */
-int process_input(char *in, struct elem_vec *evec);
+int process_input(const char *in, struct elem_vec *evec);
 
 /*
  *Prints the element data stored in the provided elem_vec as well as their

@@ -29,7 +29,7 @@ struct elem_vec {
  *	struct elem_vec* - pointer to the allocated memory on success.
  *	                   NULL on failure.
  */
-struct elem_vec *create_elem_vec(char *in);
+struct elem_vec *create_elem_vec(const char *in);
 
 /*
  *Shortens the elem_vec by grouping dublicate elements. If dublicates are

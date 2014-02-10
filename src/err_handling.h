@@ -24,6 +24,6 @@ enum ERRCODE {
  *returns:
  *	void
  */
-void print_err(int err, char* msg);
+void print_err(int err, const char* msg);
 
 #endif /* __ERRHAN_H__ */

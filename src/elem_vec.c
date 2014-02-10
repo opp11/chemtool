@@ -2,7 +2,7 @@
 
 //Returns the number of elements in the input string. 
 //May be more than required, since dublicates are not accounted for.
-static int get_num_elems(char *in);
+static int get_num_elems(const char *in);
 
 //Marks the dublicates of crnt_e by zeroing out their 'quant' field.
 //Also adds their 'quant' field to crnt_e's 'quant' field. Returns the amount
@@ -12,7 +12,7 @@ static int group_dublicates(int crnt_e, struct elem_vec *vec);
 //Transfer the unique elements from 'vec' into 'new_elems'.
 static void transfer_elems(struct pe_elem *new_elms, struct elem_vec *vec);
 
-struct elem_vec *create_elem_vec(char* in)
+struct elem_vec *create_elem_vec(const char* in)
 {
 	struct pe_elem *evec = NULL;
 	struct elem_vec *out = NULL;
@@ -69,7 +69,7 @@ void destroy_elem_vec(struct elem_vec *vec)
 	free(vec);
 }
 
-static int get_num_elems(char *in)
+static int get_num_elems(const char *in)
 {
 	int out = 0;
 	//Since all elements begin with an uppercase letter we simply
