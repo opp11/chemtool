@@ -65,8 +65,10 @@ int shorten_elem_vec(struct elem_vec *vec)
 
 void destroy_elem_vec(struct elem_vec *vec)
 {
-	free(vec->elms);
-	free(vec);
+	if (vec){
+		free(vec->elms);
+		free(vec);
+	}
 }
 
 static int get_num_elems(const char *in)
