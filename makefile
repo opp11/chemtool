@@ -1,24 +1,38 @@
 #Compiler is cc
-CC=cc
+CC:=cc
 
 #Files to compiled. 
-#Just use all c and header files in 'src' directory for now.
-FILES=src/*.c src/*.h
+#Use all header and c files in src/ dir except main.c and python_wrapper.c.
+#These included based on the target
+FILES:=$(wildcard src/*.c src/*.h) 
+FILES:=$(filter-out src/main.c src/python_wrapper.c, $(FILES))
 
 #Output directory
 #Use '.' to output to current directory
-OUTDIR=bin
+OUTDIR:=bin
 
 #Name of the output
-OUTNAME=chemtool
+OUTNAME:=$(OUTDIR)/chemtool
 
 #Compiler flags
-CFLAGS=-o $(OUTDIR)/$(OUTNAME) -Wall
+CFLAGS:=-Wall
 
-#Normal build
+#If no target is specified report an error
 all:
-	$(CC) $(FILES) $(CFLAGS)
+	$(error No target selected)
 
-#Debug build - use '$ make dbg'
+#Remove all compiled files from OUTDIR
+clean:
+	rm $(OUTNAME)*
+
+#Normal commandline build
+cli:
+	$(CC) $(FILES) src/main.c $(CFLAGS) -o $(OUTNAME)
+
+#Commandline debug build - use '$ make dbg'
 dbg:
-	$(CC) $(FILES) $(CFLAGS) -g
+	$(CC) $(FILES) src/main.c $(CFLAGS) -g -o $(OUTNAME)
+
+#Python module build.
+pymod:
+	$(CC) $(FILES) src/python_wrapper.c -shared -I/usr/include/python2.7/ $(CFLAGS) -o $(OUTNAME).so
