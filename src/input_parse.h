@@ -3,11 +3,8 @@
 
 #include <stdlib.h>
 #include <ctype.h>
-#include "chemtool.h"
 #include "err_handling.h"
-
-struct pe_elem;
-struct elem_vec;
+#include "elem_vec.h"
 
 /*
  *Parses the input string 'in' containing a chemical formula, and fills out

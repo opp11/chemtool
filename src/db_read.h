@@ -4,11 +4,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "chemtool.h"
+#include "elem_vec.h"
 #include "err_handling.h"
-
-struct pe_elem;
-struct elem_vec;
 
 /*
  *Fills out the data fields of the provided elem_vec struct. The name of

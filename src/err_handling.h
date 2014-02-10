@@ -13,8 +13,9 @@ enum ERRCODE {
 };
 
 /*
- *Prints an error message for the provided error code. The provided msg is
- *also appended after the standard error message to give more context.
+ *Prints an error message for the provided error code to stderr. 
+ *The provided msg is also appended after the standard error message 
+ *to give more context.
  *
  *params:
  *	err - Error code to print a message for.

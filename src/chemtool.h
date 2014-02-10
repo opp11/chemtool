@@ -1,70 +1,22 @@
 #ifndef __CHEMTOOL_H__
 #define __CHEMTOOL_H__
 
-#include <ctype.h>
 #include <stdio.h>
 #include <string.h>
+#include "elem_vec.h"
 #include "db_read.h"
 #include "err_handling.h"
 #include "input_parse.h"
 
-struct pe_elem {
-	char sname[4];
-	char lname[14];
-	int quant;
-	double weight;
-};
-
-struct elem_vec {
-	struct pe_elem* elms;
-	int size;
-};
-
 /*
- *Allocates an elem_vec struct based on the input string.
- *The struct should be deacllocated with a call to 'destroy_elm_vec'.
+ *Runs the chemtool program on the input string 'in' and stores the retrieved
+ *data in the provided elem_vec. The elem_vec must have beem allocated by a
+ *previous call to create_elem_vec. On any error it immediately aborts, 
+ *prints an error message to stderr and returns the error code.
  *
  *params:
- *	in - The input string to be analysed.
- *
- *returns:
- *	struct elem_vec* - pointer to the allocated memory on success.
- *	                   NULL on failure.
- */
-struct elem_vec *create_elm_vec(char *in);
-
-/*
- *Shortens the elem_vec by grouping dublicate elements. If dublicates are
- *found then 'elms' and 'size' are modified. On return of EOOMEM the elem_vec
- *should be considered ruined and therefore destroyed by a call to
- *'destroy_elm_vec'.
- *
- *params:
- *	evec - The elem_vec to shorten. Will be modified.
- *
- *returns:
- *	int - 0 on success.
- *	      EOOMEM on failure to allocate new elem_vec.
- */
-int shorten_elm_vec(struct elem_vec *evec);
-
-/*
- *Frees the memory previously allocated by a call to 'create_elm_vec'.
- *
- *params:
- *	vec - Pointer to the elem_vec struct to free.
- *
- *return:
- *	void
- */
-void destroy_elm_vec(struct elem_vec *vec);
-
-/*
- *Runs the chemtool program on the input string 'in'. On any error it 
- *immediately aborts, prints an error message and returns the error code.
- *
- *params:
- *	in - The input string containing a chemical formula.
+ *	in   - The input string containing a chemical formula.
+ *	evec - The elem_vec where the data will be stored
  *
  *returns:
  *	int - 0 on success.
@@ -72,8 +24,20 @@ void destroy_elm_vec(struct elem_vec *vec);
  *	      EFORMAT if the database file is not formatted right / corrupted.
  *	      EENAME if an element could not be found.
  *	      EARGFMT if the formula is formatted wrong.
- *	      EOOMEM on failure to allocate new elem_vec.
+ *	      EOOMEM on memory failure.
  */
-int run_chemtool(char *in);
+int process_input(char *in, struct elem_vec *evec);
+
+/*
+ *Prints the element data stored in the provided elem_vec as well as their
+ *total molar mass to stdout formatted in a nice way.
+ *
+ *params:
+ *	evec - The elem_vec containing the data to be written.
+ *
+ *returns:
+ *	void
+ */
+void print_elems(struct elem_vec *evec);
 
 #endif /* __CHEMTOOL_H__ */
