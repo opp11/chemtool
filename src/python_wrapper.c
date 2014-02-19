@@ -31,6 +31,30 @@ exit:
 	return out_lst;
 }
 
+static void py_report_err(int err, const char* msg)
+{
+	switch (err){
+	case EFOPEN:
+		PyErr_Format(PyExc_IOError, "Expected the element database at %s", msg);
+		break;
+	case EOOMEM:
+		PyErr_NoMemory();
+		break;
+	case EENAME:
+		PyErr_Format(PyExc_NameError, "Could not find element: %s", msg);
+		break;
+	case EARGFMT:
+		PyErr_Format(PyExc_NameError, "Input not formatted correctly: %s", msg);
+		break;
+	case EDBFMT:
+		PyErr_Format(PyExc_IOError, "Database not as expected: %s", msg);
+		break;
+	default:
+		PyErr_Format(PyExc_RuntimeError, "An unknown error was reported. This might mean the program file is corrupted. Consider reinstalling the program.");
+		break;
+	}
+}
+
 static void copy_to_pylist(struct elem_vec *evec, PyObject *lst)
 {
 	int i;
@@ -48,5 +72,6 @@ PyMethodDef mod_methods[] = {
 
 void initchemtool()
 {
+	set_err_reporter(py_report_err);
 	Py_InitModule("chemtool", mod_methods);
 }

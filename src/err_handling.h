@@ -13,7 +13,8 @@ enum ERRCODE {
 };
 
 /*
- *Prints an error message for the provided error code to stderr. 
+ *Prints an error message for the provided error code using the current
+ *err_reporter. Per default this prints the error message to stderr. 
  *The provided msg is also appended after the standard error message 
  *to give more context.
  *
@@ -25,5 +26,17 @@ enum ERRCODE {
  *	void
  */
 void print_err(int err, const char* msg);
+
+/*
+ *Sets the function used by print_err to actually print the error. 
+ *Per default this is set to a function that prints the error message to stderr.
+ *
+ *params:
+ *	err_reporter - Function pointer to the new err_reporter. 
+ *	               Returns void and takes an int and a const char*
+ *returns:
+ *	void
+ */
+void set_err_reporter(void (*err_reporter)(int, const char*));
 
 #endif /* __ERRHAN_H__ */
