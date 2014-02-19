@@ -35,4 +35,4 @@ dbg:
 
 #Python module build.
 pymod:
-	$(CC) $(FILES) src/python_wrapper.c -shared -I/usr/include/python2.7/ $(CFLAGS) -o $(OUTNAME).so
+	$(CC) $(FILES) src/python_wrapper.c -shared -I/usr/include/python2.7/ $(CFLAGS) -o $(OUTNAME).so -fPIC
