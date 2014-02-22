@@ -1,117 +1,117 @@
-Ac ;227.00000000;Actinium     ;89
-Ag ;107.86820000;Silver       ;47
-Al ;26.981538600;Aluminium    ;13
-Am ;243.00000000;Americium    ;95
-Ar ;39.948000000;Argon        ;18
-As ;74.921600000;Arsenic      ;33
-At ;210.00000000;Astatine     ;85
-Au ;196.96656900;Gold         ;79
-B  ;10.811000000;Boron        ;5
-Ba ;137.32700000;Barium       ;56
-Be ;9.0121820000;Beryllium    ;4
-Bh ;264.00000000;Bohrium      ;107
-Bi ;208.98040100;Bismuth      ;83
-Bk ;247.00000000;Berkelium    ;97
-Br ;79.904000000;Bromine      ;35
-C  ;12.010700000;Carbon       ;6
-Ca ;40.078000000;Calcium      ;20
-Cd ;112.41100000;Cadmium      ;48
-Ce ;140.11600000;Cerium       ;58
-Cf ;251.00000000;Californium  ;98
-Cl ;35.453000000;Chlorine     ;17
-Cm ;247.00000000;Curium       ;96
-Co ;58.933195000;Cobalt       ;27
-Cr ;51.996100000;Chromium     ;24
-Cs ;132.90545190;Cesium       ;55
-Cu ;63.546000000;Copper       ;29
-Db ;262.00000000;Dubnium      ;105
-Ds ;271.00000000;Ununnilium   ;110
-Dy ;162.50010000;Dysprosium   ;66
-Er ;167.25900000;Erbium       ;68
-Es ;252.00000000;Einsteinium  ;99
-Eu ;151.96400000;Europium     ;63
-F  ;18.999400000;Fluorine     ;9
-Fe ;55.845000000;Iron         ;26
-Fm ;257.00000000;Fermium      ;100
-Fr ;223.00000000;Francium     ;87
-Ga ;69.723000000;Gallium      ;31
-Gd ;157.25000000;Gadolinium   ;64
-Ge ;72.640000000;Germanium    ;32
-H  ;1.0079400000;Hydrogen     ;1
-He ;4.0026020000;Helium       ;2
-Hf ;178.49000000;Hafnium      ;72
-Hg ;200.59000000;Hydrargyrum  ;80
-Ho ;164.93032000;Holmium      ;67
-Hs ;277.00000000;Hassium      ;108
-I  ;126.90447000;Iodine       ;53
-In ;114.81800000;Indium       ;49
-Ir ;192.21700000;Iridium      ;77
-K  ;39.098300000;Potassium    ;19
-Kr ;83.798000000;Krypton      ;36
-La ;138.90547000;Lanthanum    ;57
-Li ;6.9410000000;Lithium      ;3
-Lr ;262.00000000;Lawrencium   ;103
-Lu ;174.96680000;Lutetium     ;71
-Md ;258.00000000;Mendelevium  ;101
-Mg ;24.305000000;Magnesium    ;12
-Mn ;54.938045000;Manganese    ;25
-Mo ;95.960000000;Molybdaenum  ;42
-Mt ;268.00000000;Meitnerium   ;109
-N  ;14.006700000;Nitrogen     ;7
-Na ;22.989769280;Sodium       ;11
-Nb ;92.906380000;Niobium      ;41
-Nd ;144.24200000;Neodymium    ;60
-Ne ;20.179700000;Neon         ;10
-Ni ;58.693400000;Nickel       ;28
-No ;259.00000000;Nobelium     ;102
-Np ;237.00000000;Neptunium    ;93
-O  ;15.999400000;Oxygen       ;8
-Os ;190.23000000;Osmium       ;76
-P  ;30.973762000;Phosphorus   ;15
-Pa ;231.03588000;Protactinium ;91
-Pb ;207.20000000;Lead         ;82
-Pd ;106.42000000;Palladium    ;46
-Pm ;145.00000000;Promethium   ;61
-Po ;210.00000000;Polonium     ;84
-Pr ;140.90765000;Praseodymium ;59
-Pt ;192.08400000;Platinum     ;78
-Pu ;244.00000000;Plutonium    ;94
-Ra ;226.00000000;Radium       ;88
-Rb ;85.467800000;Rubidium     ;37
-Re ;186.20700000;Rhenium      ;75
+Ac ;227.00000000;Actinium;89
+Ag ;107.86820000;Silver;47
+Al ;26.981538600;Aluminium;13
+Am ;243.00000000;Americium;95
+Ar ;39.948000000;Argon;18
+As ;74.921600000;Arsenic;33
+At ;210.00000000;Astatine;85
+Au ;196.96656900;Gold;79
+B  ;10.811000000;Boron;5
+Ba ;137.32700000;Barium;56
+Be ;9.0121820000;Beryllium;4
+Bh ;264.00000000;Bohrium;107
+Bi ;208.98040100;Bismuth;83
+Bk ;247.00000000;Berkelium;97
+Br ;79.904000000;Bromine;35
+C  ;12.010700000;Carbon;6
+Ca ;40.078000000;Calcium;20
+Cd ;112.41100000;Cadmium;48
+Ce ;140.11600000;Cerium;58
+Cf ;251.00000000;Californium;98
+Cl ;35.453000000;Chlorine;17
+Cm ;247.00000000;Curium;96
+Co ;58.933195000;Cobalt;27
+Cr ;51.996100000;Chromium;24
+Cs ;132.90545190;Cesium;55
+Cu ;63.546000000;Copper;29
+Db ;262.00000000;Dubnium;105
+Ds ;271.00000000;Ununnilium;110
+Dy ;162.50010000;Dysprosium;66
+Er ;167.25900000;Erbium;68
+Es ;252.00000000;Einsteinium;99
+Eu ;151.96400000;Europium;63
+F  ;18.999400000;Fluorine;9
+Fe ;55.845000000;Iron;26
+Fm ;257.00000000;Fermium;100
+Fr ;223.00000000;Francium;87
+Ga ;69.723000000;Gallium;31
+Gd ;157.25000000;Gadolinium;64
+Ge ;72.640000000;Germanium;32
+H  ;1.0079400000;Hydrogen;1
+He ;4.0026020000;Helium;2
+Hf ;178.49000000;Hafnium;72
+Hg ;200.59000000;Hydrargyrum;80
+Ho ;164.93032000;Holmium;67
+Hs ;277.00000000;Hassium;108
+I  ;126.90447000;Iodine;53
+In ;114.81800000;Indium;49
+Ir ;192.21700000;Iridium;77
+K  ;39.098300000;Potassium;19
+Kr ;83.798000000;Krypton;36
+La ;138.90547000;Lanthanum;57
+Li ;6.9410000000;Lithium;3
+Lr ;262.00000000;Lawrencium;103
+Lu ;174.96680000;Lutetium;71
+Md ;258.00000000;Mendelevium;101
+Mg ;24.305000000;Magnesium;12
+Mn ;54.938045000;Manganese;25
+Mo ;95.960000000;Molybdaenum;42
+Mt ;268.00000000;Meitnerium;109
+N  ;14.006700000;Nitrogen;7
+Na ;22.989769280;Sodium;11
+Nb ;92.906380000;Niobium;41
+Nd ;144.24200000;Neodymium;60
+Ne ;20.179700000;Neon;10
+Ni ;58.693400000;Nickel;28
+No ;259.00000000;Nobelium;102
+Np ;237.00000000;Neptunium;93
+O  ;15.999400000;Oxygen;8
+Os ;190.23000000;Osmium;76
+P  ;30.973762000;Phosphorus;15
+Pa ;231.03588000;Protactinium;91
+Pb ;207.20000000;Lead;82
+Pd ;106.42000000;Palladium;46
+Pm ;145.00000000;Promethium;61
+Po ;210.00000000;Polonium;84
+Pr ;140.90765000;Praseodymium;59
+Pt ;192.08400000;Platinum;78
+Pu ;244.00000000;Plutonium;94
+Ra ;226.00000000;Radium;88
+Rb ;85.467800000;Rubidium;37
+Re ;186.20700000;Rhenium;75
 Rf ;261.00000000;Rutherfordium;104
-Rg ;272.00000000;Unununium    ;111
-Rh ;102.90550000;Rhodium      ;45
-Rn ;220.00000000;Radon        ;86
-Ru ;101.07000000;Ruthenium    ;44
-S  ;32.065000000;Sulphur      ;16
-Sb ;121.76000000;Antimony     ;51
-Sc ;44.955912000;Scandium     ;21
-Se ;78.960000000;Selenium     ;34
-Sg ;266.00000000;Seaborgium   ;106
-Si ;28.085500000;Silicon      ;14
-Sm ;150.36000000;Samarium     ;62
-Sn ;118.71000000;Tin          ;50
-Sr ;87.620000000;Strontium    ;38
-Ta ;180.94788000;Tantalum     ;73
-Tb ;158.92535000;Terbium      ;65
-Tc ;98.000000000;Technetium   ;43
-Te ;127.60000000;Tellurium    ;52
-Th ;232.03806000;Thorium      ;90
-Ti ;47.867000000;Titanium     ;22
-Tl ;204.38330000;Thallium     ;81
-Tm ;168.93421000;Thulium      ;69
-U  ;238.02891000;Uranium      ;92
-Uub;285.00000000;Ununbium     ;112
-Uuh;292.00000000;Ununhexium   ;116
-Uuo;294.00000000;Ununoctium   ;118
-Uup;288.00000000;Ununpentium  ;115
-Uuq;289.00000000;Ununquadium  ;114
-Uut;284.00000000;Ununtrium    ;113
-V  ;50.941500000;Vanadium     ;23
-W  ;183.84000000;Tungsten     ;74
-Xe ;131.29300000;Xenon        ;54
-Y  ;88.905850000;Yttrium      ;39
-Yb ;173.05400000;Ytterbium    ;70
-Zn ;65.380000000;Zinc         ;30
-Zr ;91.224000000;Zirkonium    ;40
+Rg ;272.00000000;Unununium;111
+Rh ;102.90550000;Rhodium;45
+Rn ;220.00000000;Radon;86
+Ru ;101.07000000;Ruthenium;44
+S  ;32.065000000;Sulphur;16
+Sb ;121.76000000;Antimony;51
+Sc ;44.955912000;Scandium;21
+Se ;78.960000000;Selenium;34
+Sg ;266.00000000;Seaborgium;106
+Si ;28.085500000;Silicon;14
+Sm ;150.36000000;Samarium;62
+Sn ;118.71000000;Tin;50
+Sr ;87.620000000;Strontium;38
+Ta ;180.94788000;Tantalum;73
+Tb ;158.92535000;Terbium;65
+Tc ;98.000000000;Technetium;43
+Te ;127.60000000;Tellurium;52
+Th ;232.03806000;Thorium;90
+Ti ;47.867000000;Titanium;22
+Tl ;204.38330000;Thallium;81
+Tm ;168.93421000;Thulium;69
+U  ;238.02891000;Uranium;92
+Uub;285.00000000;Ununbium;112
+Uuh;292.00000000;Ununhexium;116
+Uuo;294.00000000;Ununoctium;118
+Uup;288.00000000;Ununpentium;115
+Uuq;289.00000000;Ununquadium;114
+Uut;284.00000000;Ununtrium;113
+V  ;50.941500000;Vanadium;23
+W  ;183.84000000;Tungsten;74
+Xe ;131.29300000;Xenon;54
+Y  ;88.905850000;Yttrium;39
+Yb ;173.05400000;Ytterbium;70
+Zn ;65.380000000;Zinc;30
+Zr ;91.224000000;Zirkonium;40

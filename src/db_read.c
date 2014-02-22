@@ -54,12 +54,9 @@ static int get_single_data(struct pe_elem *elm, FILE *elemdb)
 		print_err(EDBFMT, "missing a seperating semicolon.");
 		return EDBFMT;
 	}
-	fscanf(elemdb, "%lf", &elm->weight);
-	if (conf_septor(elemdb)){
-		print_err(EDBFMT, "missing a seperating semicolon.");
-		return EDBFMT;
-	}
-	fscanf(elemdb, "%13s", elm->lname);
+	//we use fscanf to first read a long float, then discard a semicolon (;)
+	//if we encounter one, then read untill the next semicolon.
+	fscanf(elemdb, "%lf%*[;]%[^;]", &elm->weight, elm->lname);
 
 	return 0;
 }
