@@ -1,11 +1,14 @@
 #Compiler is cc
 CC:=cc
 
+#Source file dir
+SRCDIR:=src
+
 #Files to compiled. 
 #Use all header and c files in src/ dir except main.c and python_wrapper.c.
 #These included based on the target
-FILES:=$(wildcard src/*.c src/*.h) 
-FILES:=$(filter-out src/main.c src/python_wrapper.c, $(FILES))
+FILES:=$(wildcard $(SRCDIR)/*.c src/*.h) 
+FILES:=$(filter-out $(SRCDIR)/main.c $(SRCDIR)/python_wrapper.c, $(FILES))
 
 #Output directory
 #Use '.' to output to current directory
@@ -23,16 +26,18 @@ all:
 
 #Remove all compiled files from OUTDIR
 clean:
+	rm $(OUTDIR)/gui.py
 	rm $(OUTNAME)*
 
 #Normal commandline build
 cli:
-	$(CC) $(FILES) src/main.c $(CFLAGS) -o $(OUTNAME)
+	$(CC) $(FILES) $(SRCDIR)/main.c $(CFLAGS) -o $(OUTNAME)
 
 #Commandline debug build - use '$ make dbg'
 dbg:
-	$(CC) $(FILES) src/main.c $(CFLAGS) -g -o $(OUTNAME)
+	$(CC) $(FILES) $(SRCDIR)/main.c $(CFLAGS) -g -o $(OUTNAME)
 
 #Python module build.
 pymod:
-	$(CC) $(FILES) src/python_wrapper.c -shared -I/usr/include/python2.7/ $(CFLAGS) -o $(OUTNAME).so -fPIC
+	$(CC) $(FILES) $(SRCDIR)/python_wrapper.c -shared -I/usr/include/python2.7/ $(CFLAGS) -o $(OUTNAME).so -fPIC 
+	cp $(SRCDIR)/gui.py $(OUTDIR)/gui.py

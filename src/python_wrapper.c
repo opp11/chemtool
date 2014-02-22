@@ -5,7 +5,7 @@
 
 static void copy_to_pylist(struct elem_vec *evec, PyObject *lst);
 
-static PYFUNC(py_process_input)
+static PYFUNC(py_get_elem_data)
 {
 	PyObject *out_lst = NULL;
 	const char *in = NULL;
@@ -66,7 +66,7 @@ static void copy_to_pylist(struct elem_vec *evec, PyObject *lst)
 }
 
 PyMethodDef mod_methods[] = {
-	{"process_input", py_process_input, METH_VARARGS},
+	{"get_elem_data", py_get_elem_data, METH_VARARGS},
 	{NULL, NULL}
 };
 
