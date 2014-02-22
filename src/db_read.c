@@ -10,6 +10,11 @@ static int walk_to_elem(char name[4], FILE *elemdb);
 //Walks to the next line in the file 'f' and then 'offset' chars to the right
 static void to_next_line(FILE *f, int offset);
 
+//Converts a string to a double. We make our own since python changes the
+//normal C string conversion functions to round the numbers down too
+//aggressively e.g. 4.002 gets rounded to 4.0.
+static double str_to_double(char* str);
+
 //Values should be seperated by a semicolon. This returns 0 if we are on a
 //semicolo now and 1 if we are not. Also moves 1 char forward in the file.
 static inline int conf_septor(FILE *f)
@@ -45,6 +50,7 @@ exit:
 
 static int get_single_data(struct pe_elem *elm, FILE *elemdb)
 {
+	char tmp[BUFSIZ] = {0};
 	if (walk_to_elem(elm->sname, elemdb)){
 		print_err(EENAME, elm->sname);
 		return EENAME;
@@ -53,10 +59,9 @@ static int get_single_data(struct pe_elem *elm, FILE *elemdb)
 	if (conf_septor(elemdb)){
 		print_err(EDBFMT, "missing a seperating semicolon.");
 		return EDBFMT;
-	}
-	//we use fscanf to first read a long float, then discard a semicolon (;)
-	//if we encounter one, then read untill the next semicolon.
-	fscanf(elemdb, "%lf%*[;]%[^;]", &elm->weight, elm->lname);
+	}	
+	fscanf(elemdb, "%[^;]%*[;]%[^;]", tmp, elm->lname);
+	elm->weight = str_to_double(tmp);
 
 	return 0;
 }
@@ -100,4 +105,27 @@ static void to_next_line(FILE *f, int offset)
 		while (offset--)
 			fgetc(f);
 	}
+}
+
+static double str_to_double(char* str)
+{
+	int i = 0;
+	double digits = 0.0;
+	double divide = 1.0f;
+	int met_dot = 0;
+
+	while (str[i]){
+		if (met_dot){
+			divide *= 10.0;
+		}
+		if (isdigit(str[i])){
+			digits *= 10.0;
+			digits += (str[i] - '0');
+		} else if (str[i] == '.' || str[i] == ','){
+			met_dot = 1;
+		}
+		i++;
+	}
+
+	return digits / divide;
 }
