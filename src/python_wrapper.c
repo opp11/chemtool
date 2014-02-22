@@ -35,7 +35,7 @@ static void py_report_err(int err, const char* msg)
 {
 	switch (err){
 	case EFOPEN:
-		PyErr_Format(PyExc_IOError, "Expected the element database at %s", msg);
+		PyErr_Format(PyExc_IOError, "Could not open the element database.\nExpected to be at %s", msg);
 		break;
 	case EOOMEM:
 		PyErr_NoMemory();

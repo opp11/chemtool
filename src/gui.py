@@ -54,13 +54,23 @@ class Win(QtGui.QWidget):
 
     def process_input(self, event):
         self.elem_list.clear()
-        elems = chemtool.get_elem_data(str(self.input_box.text()))
-        total_mm = 0.0
-        for (sname, lname, quant, weight) in elems:
-             total_mm += weight * quant
-             self.elem_list.addItem(
-             	"{0}{1:>6}    {2:>10.7f}    {3}".format(sname, quant, weight, lname))
-        self.totmm_box.setText("{:.7f}".format(total_mm))
+        try:
+            elems = chemtool.get_elem_data(str(self.input_box.text()))
+        except IOError as err:
+            QtGui.QMessageBox.critical(self, "Database error", str(err))
+        except MemoryError as err:
+            QtGui.QMessageBox.critical(self, "Error - ran out of memory",
+		"The program ran out of RAM while doing a calculation and will now exit")
+            QtGui.QApplication.quit()
+        except NameError as err:
+            QtGui.QMessageBox.critical(self, "Error", str(err))
+        else:
+            total_mm = 0.0
+            for (sname, lname, quant, weight) in elems:
+                total_mm += weight * quant
+                self.elem_list.addItem("{0}{1:>6}    {2:>10.7f}    {3}".format(
+			sname, quant, weight, lname))
+            self.totmm_box.setText("{:.7f}".format(total_mm))
 
 if __name__ == '__main__':
     app = QtGui.QApplication(sys.argv)
