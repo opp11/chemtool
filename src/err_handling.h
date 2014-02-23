@@ -39,4 +39,17 @@ void print_err(int err, const char* msg);
  */
 void set_err_reporter(void (*err_reporter)(int, const char*));
 
+/*
+ *Gets a base error message for the provided error code. A returned error
+ *message should be followed be another string giving more context to the error.
+ *All returned error messaged end with a colon followed by a space (": ").
+ *
+ *params:
+ *	err - The error code to generate a message for.
+ *
+ *returns:
+ *	const char* - A base error message ending with ": ".
+ */
+const char* get_base_err_msg(int err);
+
 #endif /* __ERRHAN_H__ */

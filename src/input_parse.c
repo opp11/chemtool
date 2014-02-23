@@ -35,7 +35,7 @@ int parse_input(const char *in, struct elem_vec *evec)
 		} else if (in[in_i] == '('){
 			err = handle_start_paren(&in_i, in);
 		} else {
-			print_err(EARGFMT, "unrecognised character. Please only use letters, numbers and parantheses.");
+			print_err(EARGFMT, "unrecognised character. Please only use letters, numbers and parentheses.");
 			err = EARGFMT;
 		}
 		if (err)

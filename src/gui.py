@@ -3,6 +3,10 @@ import chemtool
 import sys
 from PyQt4 import QtGui, QtCore
 
+"""
+Makes a gui for the chemtool program, making it easier to use the program.
+"""
+
 class Win(QtGui.QWidget):
     def __init__(self):
         super(Win, self).__init__()
@@ -11,10 +15,18 @@ class Win(QtGui.QWidget):
 
     def build_gui(self):
         #set up window
-        self.resize(350, 300)
+        self.resize(370, 250)
+        self.setMinimumWidth(300)
+        self.setMinimumHeight(250)
         self.setWindowTitle('Chemtool')
 
         global_grid = QtGui.QGridLayout()
+
+        #make the error reporting label
+        self.err_lbl = QtGui.QLabel('', self)
+        self.err_lbl.setWordWrap(True)
+        global_grid.addWidget(self.err_lbl, 0, 0, 1, 3,
+		alignment=QtCore.Qt.AlignBottom)
 
         #make the textbox used for input
         self.input_box = QtGui.QLineEdit(self)
@@ -48,29 +60,49 @@ class Win(QtGui.QWidget):
         global_grid.addWidget(self.elem_list, 4, 0, 1, 3)
 
         #setup the layout of the grid
-        global_grid.setRowMinimumHeight(0, 30)
+        global_grid.setRowMinimumHeight(0, 20)
         global_grid.setRowMinimumHeight(2, 40)
         self.setLayout(global_grid)
 
     def process_input(self, event):
+        #clear all outputs
         self.elem_list.clear()
+        self.totmm_box.setText('')
+        self.err_lbl.setText('')
+
+        #attempt to get the element data
         try:
             elems = chemtool.get_elem_data(str(self.input_box.text()))
+        except NameError as err:
+            #something is wrong with the user's input, so display what is wrong
+            self.err_lbl.setText(
+		"<font color='red' size=2>*{}</font>".format(err))
+        except UnicodeEncodeError as err:
+            #on a unicode encoding error we display an argument format error
+            self.err_lbl.setText("<font color='red' size=2>*{}unrecognised character. Please only use letters, numbers and parentheses.</font>".format(
+		chemtool.get_base_err_msg(chemtool.err_arg_format)))
         except IOError as err:
+            #something is wrong with the databse
             QtGui.QMessageBox.critical(self, "Database error", str(err))
         except MemoryError as err:
+            #we have run out of memory
+            #display an error message and exit
             QtGui.QMessageBox.critical(self, "Error - ran out of memory",
 		"The program ran out of RAM while doing a calculation and will now exit")
             QtGui.QApplication.quit()
-        except NameError as err:
-            QtGui.QMessageBox.critical(self, "Error", str(err))
+        except RuntimeError as err:
+            #an unknown error occurred so warn the user
+            QtGui.QMessageBox.critical(self, "Unknown error", str(err))
         else:
-            total_mm = 0.0
-            for (sname, lname, quant, weight) in elems:
-                total_mm += weight * quant
-                self.elem_list.addItem("{0}{1:>6}    {2:>10.7f}    {3}".format(
-			sname, quant, weight, lname))
-            self.totmm_box.setText("{:.7f}".format(total_mm))
+            #the parsing was succesful so if something was returned 
+            #display the data
+            if len(elems) > 0:
+                total_mm = 0.0
+                for (sname, lname, quant, weight) in elems:
+                    total_mm += weight * quant
+                    self.elem_list.addItem("{0}{1:>6}    {2:>12.7f}    {3}".
+			format(sname, quant, weight, lname))
+                self.totmm_box.setText("{:.7f}".format(total_mm))
 
 if __name__ == '__main__':
     app = QtGui.QApplication(sys.argv)
