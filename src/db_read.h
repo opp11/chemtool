@@ -14,7 +14,7 @@
  *and must be filled out when the function is called.
  *If an element cannot be found within the database, the function will abort
  *the read and return. Structs filled prior to the one causing the error
- *will have the correct values in their 'weight' fields.
+ *will have the correct values in their fields.
  *
  *params:
  *	evec - Pointer to an array of pe_elem structs to fill out.
@@ -22,7 +22,7 @@
  *returns:
  *	int - 0 on succes.
  *	      EFOPEN if the database file could not be found.
- *	      EFORMAT if the database file is not formatted right / corrupted.
+ *	      EDBFMT if the database file is not formatted right / corrupted.
  *	      EENAME if an element could not be found.
  */
 int get_elem_data(struct elem_vec *evec);

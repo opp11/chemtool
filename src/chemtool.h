@@ -12,7 +12,7 @@
  *Runs the chemtool program on the input string 'in' and stores the retrieved
  *data in the provided elem_vec. The elem_vec must have beem allocated by a
  *previous call to create_elem_vec. On any error it immediately aborts, 
- *prints an error message to stderr and returns the error code.
+ *prints an error message with print_err and returns the error code.
  *
  *params:
  *	in   - The input string containing a chemical formula.

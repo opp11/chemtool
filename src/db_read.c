@@ -109,22 +109,21 @@ static void to_next_line(FILE *f, int offset)
 
 static double str_to_double(char* str)
 {
-	int i = 0;
 	double digits = 0.0;
 	double divide = 1.0f;
 	int met_dot = 0;
 
-	while (str[i]){
+	while (*str){
 		if (met_dot){
 			divide *= 10.0;
 		}
-		if (isdigit(str[i])){
+		if (isdigit(*str)){
 			digits *= 10.0;
-			digits += (str[i] - '0');
-		} else if (str[i] == '.' || str[i] == ','){
+			digits += ((*str) - '0');
+		} else if ((*str) == '.' || (*str) == ','){
 			met_dot = 1;
 		}
-		i++;
+		str++;
 	}
 
 	return digits / divide;

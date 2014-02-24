@@ -8,10 +8,15 @@ int main(int argc, char** argv)
 	if (argc == 1){
 		printf("Please write a chemical formula:\n");
 		fgets(in, BUFSIZ, stdin);
-		//remove trailing newline char
 		size_t last = strnlen(in, BUFSIZ) - 1;
+		//abort without doing anything if the input is empty
+		if (last == 0)
+			return 0;
+
+		//remove trailing newline char
 		if (in[last] == '\n')
-			in[last] = '\0';			
+			in[last] = '\0';
+
 		printf("--------------------------------------------------\n");
 	} else {
 		strncpy(in, argv[1], BUFSIZ);

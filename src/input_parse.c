@@ -1,11 +1,23 @@
 #include "input_parse.h"
 
+//Functions for handling different parts of the input. All handle functions 
+//are responsible for moving the char pointer, and printing an error message 
+//if encountered.
 static int handle_num(int *pos, const char *in, struct pe_elem *crnt_elm);
 static int handle_elem(int *pos, const char *in, struct pe_elem *crnt_elm);
 static int handle_start_paren(int *pos, const char *in);
 static int handle_end_paren(int *pos, const char *in, struct pe_elem *crnt_elm);
+
+//Apply the multiplier for all elements enclosed in the current paren pair.
+//Walks over all elements and multiplies the 'quant' field with the multiplier.
 static void apply_paren_mult(int mult, int elm_count, struct pe_elem *crnt_elm);
+
+//Prepare all pe_elms in the vector by setting their fields to standard values,
+//so we don't have to worry about that later.
 static void prepare_elms(struct elem_vec *evec);
+
+//Run a quick check to test whether all start parens have a matching end paren
+//and vice versa. Returns 0 if ok and nonzero if faulty.
 static int parens_faulty(const char *in);
 
 int parse_input(const char *in, struct elem_vec *evec)

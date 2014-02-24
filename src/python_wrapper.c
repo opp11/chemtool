@@ -4,7 +4,15 @@
 
 #define PYFUNC(fname) PyObject *fname(PyObject *self, PyObject *args)
 
+//Copy all elements in the elem_vec to the Python list.
 static void copy_to_pylist(struct elem_vec *evec, PyObject *lst);
+
+//Python wrapper for the chemtool function that extracts the data from the
+//input string and returns a list of tuples with (sname, lname, quant, weight).
+static PYFUNC(py_get_elem_data);
+
+//Python wrapper for 'get_base_err_msg' in err_handling.h
+static PYFUNC(py_get_base_err_msg);
 
 static PYFUNC(py_get_elem_data)
 {
@@ -42,6 +50,7 @@ static PYFUNC(py_get_base_err_msg)
 	return PyString_FromString(get_base_err_msg(err));
 }
 
+//Propagate any erros reported by the chemtool functions as Python exceptions
 static void py_report_err(int err, const char* msg)
 {
 	switch (err){
@@ -92,7 +101,7 @@ void initchemtool()
 	//handle to the module
 	PyObject *mod;
 
-	//the error values as python objects
+	//the error values as Python objects
 	PyObject *py_efopen = PyLong_FromLong(EFOPEN);
 	PyObject *py_eename = PyLong_FromLong(EENAME);
 	PyObject *py_edbfmt = PyLong_FromLong(EDBFMT);
@@ -102,7 +111,7 @@ void initchemtool()
 	set_err_reporter(py_report_err);
 	mod = Py_InitModule("chemtool", mod_methods);
 
-	//make the error values visible for python in our module's scope
+	//make the error values visible for Python in our module's scope
 	PyObject_SetAttrString(mod, "err_file_open", py_efopen);
 	Py_DECREF(py_efopen);
 	PyObject_SetAttrString(mod, "err_elm_name", py_eename);

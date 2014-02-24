@@ -1,5 +1,6 @@
 #include "err_handling.h"
 
+//The standard error reporter. Simply prints the message to stderr
 static void std_report_err(int err, const char *msg)
 {
 	fprintf(stderr, "%s%s\n", get_base_err_msg(err), msg);
