@@ -36,15 +36,3 @@ cli:
 dbg:
 	$(CC) $(FILES) $(SRCDIR)/main.c $(CFLAGS) -g -o $(OUTNAME)/chemtool
 
-#Python module build.
-pymod:
-	$(CC) $(FILES) $(SRCDIR)/python_wrapper.c -shared -I/usr/include/python2.7/ $(CFLAGS) -o $(OUTDIR)/chemtool.so -fPIC 
-	cp $(SRCDIR)/gui.py $(OUTDIR)/gui.py
-
-#Executable for the gui
-pyexe: pymod
-	$(PYC) bin/gui.py --windowed --name=gchemtool --distpath=bin/ --specpath=bin/tmp/ --workpath=bin/tmp/ --hidden-import=elemdb.csv --ascii
-	cp bin/elemdb.csv bin/gchemtool/
-	rm -r bin/tmp/
-	rm bin/gui.py
-	rm -f bin/chemtool.so
