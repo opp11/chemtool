@@ -1,9 +1,6 @@
 #Compiler is cc
 CC:=cc
 
-#Python "compiler"
-PYC:=python ~/PyInstaller-2.1/pyinstaller.py
-
 #Source file dir
 SRCDIR:=src
 
@@ -11,7 +8,7 @@ SRCDIR:=src
 #Use all header and c files in src/ dir except main.c and python_wrapper.c.
 #These included based on the target
 FILES:=$(wildcard $(SRCDIR)/*.c src/*.h) 
-FILES:=$(filter-out $(SRCDIR)/main.c $(SRCDIR)/python_wrapper.c, $(FILES))
+FILES:=$(filter-out $(SRCDIR)/cli_main.c $(SRCDIR)/gui_main.cpp, $(FILES))
 
 #Output directory
 #Use '.' to output to current directory
@@ -30,9 +27,12 @@ clean:
 
 #Normal commandline build
 cli:
-	$(CC) $(FILES) $(SRCDIR)/main.c $(CFLAGS) -o $(OUTDIR)/chemtool
+	$(CC) $(FILES) $(SRCDIR)/cli_main.c $(CFLAGS) -o $(OUTDIR)/chemtool
 
 #Commandline debug build - use '$ make dbg'
 dbg:
-	$(CC) $(FILES) $(SRCDIR)/main.c $(CFLAGS) -g -o $(OUTNAME)/chemtool
+	$(CC) $(FILES) $(SRCDIR)/cli_main.c $(CFLAGS) -g -o $(OUTDIR)/chemtool
 
+#Gui build
+gui:
+	g++ $(FILES) -I/usr/share/qt4/include $(SRCDIR)/gui_main.cpp $(CFLAGS) -o $(OUTDIR)/gchemtool
