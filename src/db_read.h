@@ -8,6 +8,10 @@
 #include "elem_vec.h"
 #include "err_handling.h"
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /*
  *Fills out the data fields of the provided elem_vec struct. The name of
  *the element to find is read from the the pe_elem struct's 'sname' field
@@ -26,5 +30,9 @@
  *	      EENAME if an element could not be found.
  */
 int get_elem_data(struct elem_vec *evec);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* __DBREAD_H__ */

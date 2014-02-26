@@ -4,6 +4,10 @@
 #include <stdio.h>
 #include <stdarg.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 enum ERRCODE {
 	EFOPEN = 1, //Could not open file
 	EENAME, //Could not find element
@@ -51,5 +55,9 @@ void set_err_reporter(void (*err_reporter)(int, const char*));
  *	const char* - A base error message ending with ": ".
  */
 const char* get_base_err_msg(int err);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* __ERRHAN_H__ */

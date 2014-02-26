@@ -8,6 +8,10 @@
 #include "err_handling.h"
 #include "input_parse.h"
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /*
  *Runs the chemtool program on the input string 'in' and stores the retrieved
  *data in the provided elem_vec. The elem_vec must have beem allocated by a
@@ -39,5 +43,9 @@ int process_input(const char *in, struct elem_vec *evec);
  *	void
  */
 void print_elems(struct elem_vec *evec);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* __CHEMTOOL_H__ */

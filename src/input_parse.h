@@ -6,6 +6,10 @@
 #include "err_handling.h"
 #include "elem_vec.h"
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /*
  *Parses the input string 'in' containing a chemical formula, and fills out
  *the array of pe_elem structs with the data. If an error is detected the
@@ -23,5 +27,9 @@
  *	      EARGFMT if the formula is formatted wrong.
  */
 int parse_input(const char *in, struct elem_vec *evec);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* __INPARSE_H__ */

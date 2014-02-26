@@ -19,13 +19,13 @@ struct elem_vec *create_elem_vec(const char* in)
 	int ecount = get_num_elems(in);
 
 	//First try to allocate all the pe_elems, and if that fails abort
-	evec = calloc(ecount, sizeof(struct pe_elem));
+	evec = (struct pe_elem*)calloc(ecount, sizeof(struct pe_elem));
 	if (!evec)
 		return NULL;
 
 	//Then try to allocate the elem_vec. If that fails then deallocate the
 	//pe_elems and abort.
-	out = malloc(sizeof(struct elem_vec));
+	out = (struct elem_vec*)malloc(sizeof(struct elem_vec));
 	if (out){
 		out->size = ecount;
 		out->elms = evec;
@@ -49,7 +49,7 @@ int shorten_elem_vec(struct elem_vec *vec)
 		//no elems were grouped so no need to shorten
 		return 0;
 
-	new_elms = calloc(new_size, sizeof(struct pe_elem));
+	new_elms = (struct pe_elem*)calloc(new_size, sizeof(struct pe_elem));
 	if (!new_elms){
 		print_err(EOOMEM, "not enough unused RAM.");
 		return EOOMEM;

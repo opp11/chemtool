@@ -6,6 +6,10 @@
 #include <stdlib.h>
 #include "err_handling.h"
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 struct pe_elem {
 	char sname[4];
 	char lname[14];
@@ -56,5 +60,9 @@ int shorten_elem_vec(struct elem_vec *evec);
  *	void
  */
 void destroy_elem_vec(struct elem_vec *vec);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif  /* __ELEMVEC_H__ */
