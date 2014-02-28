@@ -72,7 +72,11 @@ void win::do_process_input()
 	double tot_mm = 0.0f;
 	char elem_data[BUFSIZ] = {0};
 
+	//reset all outputs
 	err_lbl.setText("");
+	totmm_txtbox.setText("");
+	elem_lst.clear();
+
 	struct elem_vec* evec = create_elem_vec(
 		in_txtbox.text().toUtf8().constData());
 	if (!evec){
@@ -94,7 +98,7 @@ void win::do_process_input()
 		case EENAME:
 		case EARGFMT:
 			err_lbl.setText(
-				QString("<font color='red' size='3'>%1</font>").
+				QString("<font color='red' size='3'>*%1</font>").
 				arg(err_msg));
 			break;
 		}
