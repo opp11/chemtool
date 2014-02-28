@@ -5,24 +5,23 @@ CXX:=g++
 #Source file dir
 SRCDIR:=src
 
-#Files to compiled. 
-#Use all header and c files in src/ dir except main.c and python_wrapper.c.
-#These included based on the target
+#Files to compiled.
+GUIFILES:=$(SRCDIR)/gui_main.cpp $(SRCDIR)/gui_main.h $(SRCDIR)/moc_gui_main.cpp
+CLIFILES:=$(SRCDIR)/cli_main.c
 FILES:=$(wildcard $(SRCDIR)/*.c src/*.h) 
-FILES:=$(filter-out $(SRCDIR)/cli_main.c $(SRCDIR)/gui_main.cpp, $(FILES))
+FILES:=$(filter-out $(GUIFILES) $(CLIFILES), $(FILES))
 
-#Qt files
+#Qt variables
 QINCPATH:=-I/usr/include/qt4/ -I/usr/include/qt4/QtCore -I/usr/include/qt4/QtGui
-
-#Qt libraries
 QLIBPATH:=-lQtGui -lQtCore
+QMOC:=/usr/bin/moc-qt4
 
 #Output directory
 #Use '.' to output to current directory
 OUTDIR:=bin
 
 #Compiler flags
-CCFLAGS:=-Wall
+CCFLAGS:=-Wall -fPIC
 CXXFLAGS:=-Wall --std=c++11
 
 #If no target is specified report an error
@@ -35,12 +34,15 @@ clean:
 
 #Normal commandline build
 cli:
-	$(CC) $(FILES) $(SRCDIR)/cli_main.c $(CCFLAGS) -o $(OUTDIR)/chemtool
+	$(CC) $(FILES) $(CLIFILES) $(CCFLAGS) -o $(OUTDIR)/chemtool
 
 #Commandline debug build - use '$ make dbg'
-dbg:
-	$(CC) $(FILES) $(SRCDIR)/cli_main.c $(CCFLAGS) -g -o $(OUTDIR)/chemtool
+cli_dbg:
+	$(CC) $(FILES) $(CLIFILES) $(SRCDIR)/cli_main.c $(CCFLAGS) -g -o $(OUTDIR)/chemtool
 
 #Gui build
-gui:
-	$(CXX) $(FILES)  $(QINCPATH) $(QLIBPATH) $(SRCDIR)/gui_main.cpp $(CXXFLAGS) -o $(OUTDIR)/gchemtool
+gui: qt_moc
+	$(CXX) $(FILES) $(GUIFILES) $(QINCPATH) $(QLIBPATH) $(CXXFLAGS) -o $(OUTDIR)/gchemtool
+	rm -f $(SRCDIR)/moc_gui_main.cpp
+qt_moc:
+	$(QMOC) $(SRCDIR)/gui_main.h $(QINCPATH) -o $(SRCDIR)/moc_gui_main.cpp
