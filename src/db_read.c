@@ -10,8 +10,8 @@ static int walk_to_elem(char name[4], FILE *elemdb);
 //Walks to the next line in the file 'f' and then 'offset' chars to the right
 static void to_next_line(FILE *f, int offset);
 
-//Converts a string to a double. We make our own since python changes the
-//normal C string conversion functions to round the numbers down too
+//Converts a string to a double. We make our own since the
+//normal C string conversion functions round the numbers down too
 //aggressively e.g. 4.002 gets rounded to 4.0.
 static double str_to_double(char* str);
 

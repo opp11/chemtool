@@ -20,8 +20,10 @@ struct elem_vec *create_elem_vec(const char* in)
 
 	//First try to allocate all the pe_elems, and if that fails abort
 	evec = (struct pe_elem*)calloc(ecount, sizeof(struct pe_elem));
-	if (!evec)
+	if (!evec){
+		print_err(EOOMEM, "not eough unused RAM.");
 		return NULL;
+	}
 
 	//Then try to allocate the elem_vec. If that fails then deallocate the
 	//pe_elems and abort.
@@ -30,6 +32,7 @@ struct elem_vec *create_elem_vec(const char* in)
 		out->size = ecount;
 		out->elms = evec;
 	} else {
+		print_err(EOOMEM, "not eough unused RAM.");
 		free(evec);
 	}
 	return out;
