@@ -28,7 +28,7 @@ win::win(QWidget* app) :
 {
 	//setup the window
 	this->setWindowTitle("chemtool");
-	this->resize(300, 250);
+	this->resize(350, 250);
 	this->setMinimumHeight(250);
 	this->setMinimumWidth(250);
 
@@ -57,9 +57,7 @@ win::win(QWidget* app) :
 	grid.addWidget(&unit_lbl, 3, 2, 1, 1);
 
 	//setup the element list
-	QFont font;
-	font.setStyleHint(QFont::Monospace);
-	elem_lst.setFont(font);
+	elem_lst.setFont(QFont("monospace", 10));
 	grid.addWidget(&elem_lst, 4, 0, 1, 3);
 
 	this->show();
