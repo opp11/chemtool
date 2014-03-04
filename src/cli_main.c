@@ -8,7 +8,7 @@ int main(int argc, char** argv)
 	if (argc == 1){
 		printf("Please write a chemical formula:\n");
 		fgets(in, BUFSIZ, stdin);
-		size_t last = strnlen(in, BUFSIZ) - 1;
+		size_t last = strlen(in) - 1;
 		//abort without doing anything if the input is empty
 		if (last == 0)
 			return 0;
