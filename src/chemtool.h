@@ -32,18 +32,6 @@ extern "C" {
  */
 int process_input(const char *in, struct elem_vec *evec);
 
-/*
- *Prints the element data stored in the provided elem_vec as well as their
- *total molar mass to stdout formatted in a nice way.
- *
- *params:
- *	evec - The elem_vec containing the data to be written.
- *
- *returns:
- *	void
- */
-void print_elems(struct elem_vec *evec);
-
 #ifdef __cplusplus
 }
 #endif
