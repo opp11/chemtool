@@ -21,7 +21,7 @@ QMOC:=/usr/bin/moc-qt4
 OUTDIR:=bin
 
 #Compiler flags
-CCFLAGS:=-Wall -fPIC
+CCFLAGS:=-Wall
 CXXFLAGS:=-Wall --std=c++11
 
 #If no target is specified report an error
