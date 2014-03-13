@@ -10,17 +10,10 @@ static int walk_to_elem(char name[4], FILE *elemdb);
 //Walks to the next line in the file 'f' and then 'offset' chars to the right
 static void to_next_line(FILE *f, int offset);
 
-//Converts a string to a double. We make our own since the
-//normal C string conversion functions round the numbers down too
-//aggressively e.g. 4.002 gets rounded to 4.0.
-static double str_to_double(char* str);
-
 //Values should be seperated by a semicolon. This returns 0 if we are on a
-//semicolo now and 1 if we are not. Also moves 1 char forward in the file.
-static inline int conf_septor(FILE *f)
-{
-	return (fgetc(f) != ';');
-}
+//semicolon now. If we are not it prints an error message and returns EDBFMT.
+//Also moves 1 char forward in the file.
+static int conf_septor(FILE *f);
 
 int get_elem_data(struct elem_vec *evec)
 {
@@ -32,9 +25,11 @@ int get_elem_data(struct elem_vec *evec)
 	//abort on failure to open
 	if (!elemdb){
 		print_err(EFOPEN, "./elemdb.csv");
+		//direct return to avoid call to fclose
 		return EFOPEN;
 	}
 
+	//get the data for all elements
 	for (; i < evec->size; i++){
 		err = get_single_data(&evec->elms[i], elemdb);
 		
@@ -50,18 +45,35 @@ exit:
 
 static int get_single_data(struct pe_elem *elm, FILE *elemdb)
 {
-	char tmp[BUFSIZ] = {0};
-	if (walk_to_elem(elm->sname, elemdb)){
-		print_err(EENAME, elm->sname);
-		return EENAME;
+	int err = 0;
+
+	err = walk_to_elem(elm->sname, elemdb);
+	if (err){
+		return err;
 	}
 
-	if (conf_septor(elemdb)){
-		print_err(EDBFMT, "missing a seperating semicolon.");
+	err = conf_septor(elemdb);
+	if (err)
+		return err;
+
+	//read element weight
+	err = fscanf(elemdb, "%lf", &elm->weight);
+	//fscanf returns 0 or EOF on read failure so check for that
+	if (!err || err == EOF){
+		print_err(EDBFMT, "could not read an element's weight.");
 		return EDBFMT;
-	}	
-	fscanf(elemdb, "%[^;]%*[;]%[^;]", tmp, elm->lname);
-	elm->weight = str_to_double(tmp);
+	}
+
+	err = conf_septor(elemdb);
+	if (err)
+		return err;
+
+	//read full name of the element
+	err = fscanf(elemdb, "%[^;]", elm->lname);
+	if (!err || err == EOF){
+		print_err(EDBFMT, "could not read an element's full name.");
+		return EDBFMT;
+	}
 
 	return 0;
 }
@@ -76,17 +88,18 @@ static int walk_to_elem(char name[4], FILE *elemdb)
 	//walk untill the names match
 	while (strncmp(name, raw, 3)){
 		to_next_line(elemdb, 0);
-		resp = fgets(raw, 4, elemdb);
 		if (!resp){
 			if (!did_rewind){
 				rewind(elemdb);
 				did_rewind = 1;
 			} else { 
-				//if we walked through the whole file
-				//then abort and return element not found
+				//this is the second time we have walked the 
+				//whole file, so abort and print err message.
+				print_err(EENAME, name);
 				return EENAME;
 			}
 		}
+		resp = fgets(raw, 4, elemdb);
 	}
 
 	return 0;
@@ -95,7 +108,7 @@ static int walk_to_elem(char name[4], FILE *elemdb)
 static void to_next_line(FILE *f, int offset)
 {
 	char crnt;
-	//walk to next line
+	//walk to next line or end of file
 	do {
 		crnt = fgetc(f);
 	} while (crnt != '\n' && crnt != EOF);
@@ -107,24 +120,11 @@ static void to_next_line(FILE *f, int offset)
 	}
 }
 
-static double str_to_double(char* str)
+static int conf_septor(FILE *f)
 {
-	double digits = 0.0;
-	double divide = 1.0f;
-	int met_dot = 0;
-
-	while (*str){
-		if (met_dot){
-			divide *= 10.0;
-		}
-		if (isdigit(*str)){
-			digits *= 10.0;
-			digits += ((*str) - '0');
-		} else if ((*str) == '.' || (*str) == ','){
-			met_dot = 1;
-		}
-		str++;
+	if (fgetc(f) != ';'){
+		print_err(EDBFMT, "missing a seperating semicolon.");
+		return EDBFMT;
 	}
-
-	return digits / divide;
+	return 0;
 }
