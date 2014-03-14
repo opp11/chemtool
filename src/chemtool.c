@@ -6,14 +6,13 @@ int process_input(const char* in, struct elem_vec *evec)
 
 	err = parse_input(in, evec);
 	if (err)
-		goto exit;
+		return err;
 	err = shorten_elem_vec(evec);
 	if (err)
-		goto exit;
+		return err;
 	err = get_elem_data(evec);
 	if (err)
-		goto exit;
+		return err;
 
-exit:
-	return err;
+	return 0;
 }

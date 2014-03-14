@@ -9,7 +9,7 @@ extern "C" {
 #endif
 
 enum ERRCODE {
-	EFOPEN = 1, //Could not open file
+	EDBOPEN = 1, //Could not open file
 	EENAME, //Could not find element
 	EDBFMT, //Data is formatted wrong
 	EARGFMT, //Argument is formatted wrong

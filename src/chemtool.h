@@ -24,7 +24,7 @@ extern "C" {
  *
  *returns:
  *	int - 0 on success.
- *	      EFOPEN if the database file could not be found.
+ *	      EDBOPEN if the database file could not be found.
  *	      EFORMAT if the database file is not formatted right / corrupted.
  *	      EENAME if an element could not be found.
  *	      EARGFMT if the formula is formatted wrong.

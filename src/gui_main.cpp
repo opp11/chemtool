@@ -91,7 +91,7 @@ void win::do_process_input()
 		case EOOMEM:
 			report_mem_err();
 			break;
-		case EFOPEN: 
+		case EDBOPEN: 
 		case EDBFMT:
 			QMessageBox::critical(this, "Database error", err_msg);
 			break;

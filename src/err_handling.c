@@ -6,6 +6,7 @@ static void std_report_err(int err, const char *msg)
 	fprintf(stderr, "%s%s\n", get_base_err_msg(err), msg);
 }
 
+//Function pointer to error reporter. Points to std_report_err as default.
 static void (*report_err)(int err, const char *msg) = std_report_err;
 
 void print_err(int err, const char* msg)
@@ -21,7 +22,7 @@ void set_err_reporter(void (*err_reporter)(int, const char*))
 const char* get_base_err_msg(int err)
 {	
 	switch(err){
-	case EFOPEN:
+	case EDBOPEN:
 		return "Could not open the element database. Expected at: ";
 	case EENAME:
 		return "Could not find element: ";

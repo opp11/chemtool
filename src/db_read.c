@@ -1,5 +1,8 @@
 #include "db_read.h"
 
+static const char* db_name = "elemdb.csv";
+static char db_path[BUFSIZ] = "./elemdb.csv";
+
 //Fills out the data fields of a single pe_elem struct
 //by reading from the 'elemdb' file
 static int get_single_data(struct pe_elem *elm, FILE *elemdb);
@@ -21,12 +24,12 @@ int get_elem_data(struct elem_vec *evec)
 	int i = 0;
 	int err = 0;
 
-	elemdb = fopen("./elemdb.csv", "r");
+	elemdb = fopen(db_path, "r");
 	//abort on failure to open
 	if (!elemdb){
-		print_err(EFOPEN, "./elemdb.csv");
+		print_err(EDBOPEN, db_path);
 		//direct return to avoid call to fclose
-		return EFOPEN;
+		return EDBOPEN;
 	}
 
 	//get the data for all elements
@@ -41,6 +44,28 @@ int get_elem_data(struct elem_vec *evec)
 exit:
 	fclose(elemdb);
 	return err;
+}
+
+int set_db_path(const char* path)
+{
+	int len = strlen(path);
+	char new_dir[BUFSIZ] = {0};
+
+	while (len && path[len] != '/' && path[len] != '\\'){
+		len--;
+	}
+	if (!len){
+		strcpy(new_dir, "./");
+	} else if (len + strlen(db_name) + 1 < BUFSIZ){
+		//copy the first 'len' chars of len as the new dir
+		strncpy(new_dir, path, len);
+	} else {
+		//return error if the path is too large
+		return len;
+	}
+	sprintf(db_path, "%s/%s", new_dir, db_name);
+
+	return 0;
 }
 
 static int get_single_data(struct pe_elem *elm, FILE *elemdb)

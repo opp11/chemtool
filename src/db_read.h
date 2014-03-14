@@ -25,11 +25,26 @@ extern "C" {
  *
  *returns:
  *	int - 0 on succes.
- *	      EFOPEN if the database file could not be found.
+ *	      EDBOPEN if the database file could not be found.
  *	      EDBFMT if the database file is not formatted right / corrupted.
  *	      EENAME if an element could not be found.
  */
 int get_elem_data(struct elem_vec *evec);
+
+/*
+ *Sets the path to the directory containing the database. The function strips
+ *the last word from the path (or untill a slash is encountered), so the program
+ *path is a valid input. If no slash is encountered it assumes current 
+ *directory. Returns 0 if succesfully set or nonzero if an error occurred.
+ *
+ *param:
+ *	const char* - Path to the element database.
+ *
+ *returns:
+ *	int - 0 on succes.
+ *	      Nonzero on failure.
+ */
+int set_db_path(const char* path);
 
 #ifdef __cplusplus
 }

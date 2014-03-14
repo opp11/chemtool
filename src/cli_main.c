@@ -8,6 +8,8 @@ int main(int argc, char** argv)
 	char in[BUFSIZ];
 	struct elem_vec *evec;
 
+	set_db_path(argv[0]);
+
 	if (argc == 1){
 		printf("Please write a chemical formula:\n");
 		fgets(in, BUFSIZ, stdin);
