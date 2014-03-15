@@ -23,9 +23,9 @@ static int parens_faulty(const char *in);
 int parse_input(const char *in, struct elem_vec *evec)
 {
 	int err = 0;
-	int in_i = 0;
-	int elm_i = 0;
-	int first_elem = 1;
+	int in_i = 0;//Crnt index of the input string
+	int elm_i = 0;//Crnt index of the element vector
+	int first_elem = 1;//Are we parsing the first element
 
 	if (parens_faulty(in)){
 		print_err(EARGFMT, "the parentheses do not match.");
@@ -33,20 +33,26 @@ int parse_input(const char *in, struct elem_vec *evec)
 	}
 
 	prepare_elms(evec);
+
 	while (in[in_i]){
 		if (isalpha(in[in_i])){
+			//Letter was encountered
 			if (first_elem)
 				first_elem = 0;
 			else
 				elm_i++;
 			err = handle_elem(&in_i, in, &evec->elms[elm_i]);
 		} else if (isdigit(in[in_i])){
+			//Number was encountered
 			err = handle_num(&in_i, in, &evec->elms[elm_i]);
 		} else if (in[in_i] == ')'){
+			//End paren was encountered
 			err = handle_end_paren(&in_i, in, &evec->elms[elm_i]);
 		} else if (in[in_i] == '('){
+			//Start paren was encountered
 			err = handle_start_paren(&in_i, in);
 		} else {
+			//Unrecognised character encountered
 			print_err(EARGFMT, "unrecognised character. Please only use letters, numbers and parentheses.");
 			err = EARGFMT;
 		}
@@ -71,6 +77,7 @@ static int handle_num(int *pos, const char *in, struct pe_elem *crnt_elm)
 		return EARGFMT;
 	}
 
+	//Read all digits of the number
 	while (isdigit(in[*pos])){
 		buffer[i] = in[*pos];
 		i++;
@@ -97,6 +104,7 @@ static int handle_elem(int *pos, const char *in, struct pe_elem *crnt_elm)
 		return EENAME;
 	}
 
+	//Read all letters in the element
 	while (islower(in[*pos])){
 		if (i > 2){
 			//An element name cannot be longer than 3 letters,
@@ -115,6 +123,8 @@ static int handle_elem(int *pos, const char *in, struct pe_elem *crnt_elm)
 static int handle_start_paren(int *pos, const char *in)
 {
 	(*pos)++;
+	//Check if the character following the is a capital letter and therefore
+	//the start of a new element. If not print error message and abort.
 	if (isupper(in[*pos])){
 		return 0;
 	} else {
@@ -132,7 +142,7 @@ static int handle_end_paren(int *pos, const char *in, struct pe_elem *crnt_elm)
 	int elm_count = 0;
 
 	(*pos)++;
-	//get the value of the multiplier for this paren now,
+	//Get the value of the multiplier for this paren now,
 	//so we can apply it later
 	if (isdigit(in[*pos])){
 		struct pe_elem tmp;
@@ -140,17 +150,17 @@ static int handle_end_paren(int *pos, const char *in, struct pe_elem *crnt_elm)
 		mult = tmp.quant;
 	}		
 
-	//walk backwards through the input string untill that matching
+	//Walk backwards through the input string untill that matching
 	//start paren is found.
 	i--;
 	while (in[i] != '(' || paren_lvl > 0){
-		//make sure nested parens are handled correct, by counting
+		//Make sure nested parens are handled correct, by counting
 		//what 'nesting level' we are at.
 		if (in[i] == ')')
 			paren_lvl++;
 		else if (in[i] == '(')
 			paren_lvl--;
-		//Count how many element will be affected by the paren
+		//Count how many element will be affected by the paren.
 		else if (isupper(in[i]))
 			elm_count++;
 		i--;
@@ -164,7 +174,9 @@ static int handle_end_paren(int *pos, const char *in, struct pe_elem *crnt_elm)
 static void apply_paren_mult(int mult, int elm_count, struct pe_elem *crnt_elm)
 {
 	if (mult == 1)
+		//No reason to multiply by 1.
 		return;
+	//Apply the multiplier on all affected elements.
 	while (elm_count){
 		crnt_elm->quant *= mult;
 		--elm_count;
@@ -187,6 +199,7 @@ static void prepare_elms(struct elem_vec *evec)
 static int parens_faulty(const char *in)
 {
 	int paren_lvl = 0;
+	//Walk the input string while counting the 'nesting level'.
 	while (*in){
 		if ((*in) == '(')
 			paren_lvl++;

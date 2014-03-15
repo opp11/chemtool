@@ -18,7 +18,7 @@ struct elem_vec *create_elem_vec(const char* in)
 	struct elem_vec *out = NULL;
 	int ecount = get_num_elems(in);
 
-	//First try to allocate all the pe_elems, and if that fails abort
+	//First try to allocate all the pe_elems, and if that fails abort.
 	evec = (struct pe_elem*)calloc(ecount, sizeof(struct pe_elem));
 	if (!evec){
 		print_err(EOOMEM, "not eough unused RAM.");
@@ -38,30 +38,34 @@ struct elem_vec *create_elem_vec(const char* in)
 	return out;
 }
 
-int shorten_elem_vec(struct elem_vec *vec)
+int shorten_elem_vec(struct elem_vec *evec)
 {
-	int crnt_e = 0;
-	int new_size = vec->size;
+	int crnt_e = 0;//Index of current element
+	int new_size = evec->size;
 	struct pe_elem *new_elms;
 
-	while (crnt_e < vec->size){
-		new_size -= group_dublicates(crnt_e, vec);
+	//Attempt to the dublicates of all elements in the vector
+	while (crnt_e < evec->size){
+		new_size -= group_dublicates(crnt_e, evec);
 		crnt_e++;
 	}
-	if (new_size == vec->size)
-		//no elems were grouped so no need to shorten
+	if (new_size == evec->size)
+		//No elements were grouped so no need to shorten
 		return 0;
 
+	//Allocate new internal array of pe_elems and if that fails abort
 	new_elms = (struct pe_elem*)calloc(new_size, sizeof(struct pe_elem));
 	if (!new_elms){
 		print_err(EOOMEM, "not enough unused RAM.");
 		return EOOMEM;
 	}
 	
-	transfer_elems(new_elms, vec);
-	free(vec->elms);
-	vec->elms = new_elms;
-	vec->size = new_size;
+	transfer_elems(new_elms, evec);
+	//Free old internal array
+	free(evec->elms);
+
+	evec->elms = new_elms;
+	evec->size = new_size;
 
 	return 0;
 }
@@ -93,14 +97,17 @@ static int get_num_elems(const char *in)
 static int group_dublicates(int crnt_e, struct elem_vec *vec)
 {
 	int i = crnt_e;
-	int out = 0;
-	//abort if this element has been zeroed out
+	int out = 0;//Number of elements marked
+
+	//Abort if this element has been zeroed out
 	if (!vec->elms[crnt_e].quant)
 		return 0;
 	i++;
+	//Walk all elements after this one
 	while (i < vec->size){
-		if (vec->elms[i].quant && !strncmp(vec->elms[crnt_e].sname,
-				vec->elms[i].sname, 3)){
+		if (!strncmp(vec->elms[crnt_e].sname, vec->elms[i].sname, 3)){
+			//Names match so tansfer the quant field, and mark this
+			//element.
 			vec->elms[crnt_e].quant += vec->elms[i].quant;
 			vec->elms[i].quant = 0;
 			out++;

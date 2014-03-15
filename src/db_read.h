@@ -35,14 +35,15 @@ int get_elem_data(struct elem_vec *evec);
  *Sets the path to the directory containing the database. The function strips
  *the last word from the path (or untill a slash is encountered), so the program
  *path is a valid input. If no slash is encountered it assumes current 
- *directory. Returns 0 if succesfully set or nonzero if an error occurred.
+ *directory. Returns 0 if succesfully set. If the path is too long the path
+ *length is returned and the operation is aborted.
  *
  *param:
  *	const char* - Path to the element database.
  *
  *returns:
  *	int - 0 on succes.
- *	      Nonzero on failure.
+ *	      Length of path.
  */
 int set_db_path(const char* path);
 

@@ -21,7 +21,7 @@ static double str_to_double(char* str);
 //Values should be seperated by a semicolon. This returns 0 if we are on a
 //semicolon now. If we are not it prints an error message and returns EDBFMT.
 //Also moves 1 char forward in the file.
-static int conf_septor(FILE *f);
+static int confirm_seperator(FILE *f);
 
 int get_elem_data(struct elem_vec *evec)
 {
@@ -56,19 +56,21 @@ int set_db_path(const char* path)
 	int len = strlen(path);
 	char new_dir[BUFSIZ] = {0};
 
+	//walk backwards through the path untill a seperator is found
 	while (len && path[len] != '/' && path[len] != '\\'){
 		len--;
 	}
-	if (!len){
+	if (len == 0)
+		//no seperator found, so assume current dir
 		strcpy(new_dir, "./");
-	} else if (len + strlen(db_name) + 1 < BUFSIZ){
-		//copy the first 'len' chars of len as the new dir
-		strncpy(new_dir, path, len);
-	} else {
+	else if (len + strlen(db_name) + 2 < BUFSIZ)
+		//copy the first 'len + 1' chars of len which is the actual path
+		strncpy(new_dir, path, len + 1);
+	else 
 		//return error if the path is too large
 		return len;
-	}
-	sprintf(db_path, "%s/%s", new_dir, db_name);
+
+	sprintf(db_path, "%s%s", new_dir, db_name);
 
 	return 0;
 }
@@ -79,21 +81,22 @@ static int get_single_data(struct pe_elem *elm, FILE *elemdb)
 	char tmp[BUFSIZ] = {0};
 
 	err = walk_to_elem(elm->sname, elemdb);
-	if (err){
-		return err;
-	}
-
-	err = conf_septor(elemdb);
 	if (err)
 		return err;
 
+	err = confirm_seperator(elemdb);
+	if (err)
+		return err;
+
+	//read the weigth of the element
 	fscanf(elemdb, "%[^;]", tmp);
 	elm->weight = str_to_double(tmp);
 
-	err = conf_septor(elemdb);
+	err = confirm_seperator(elemdb);
 	if (err)
 		return err;
-	
+
+	//read the full name of the element
 	fscanf(elemdb, "%[^;]", elm->lname);
 
 	return 0;
@@ -111,11 +114,13 @@ static int walk_to_elem(char name[4], FILE *elemdb)
 		to_next_line(elemdb, 0);
 		if (!resp){
 			if (!did_rewind){
+				//first time we reach EOF, so we might not have
+				//read the whole file
 				rewind(elemdb);
 				did_rewind = 1;
 			} else { 
 				//this is the second time we have walked the 
-				//whole file, so abort and print err message.
+				//file, so abort and print error message.
 				print_err(EENAME, name);
 				return EENAME;
 			}
@@ -136,8 +141,9 @@ static void to_next_line(FILE *f, int offset)
 	
 	//walk to offset
 	if (crnt != EOF){
-		while (offset--)
+		while (offset--){
 			fgetc(f);
+		}
 	}
 }
 
@@ -163,7 +169,7 @@ static double str_to_double(char* str)
 	return digits / divide;
 }
 
-static int conf_septor(FILE* f)
+static int confirm_seperator(FILE* f)
 {
 	if (fgetc(f) != ';'){
 		print_err(EDBFMT, "missing a seperating semicolon");
