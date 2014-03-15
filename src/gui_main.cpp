@@ -8,6 +8,7 @@ static void gui_err_reporter(int err, const char* msg);
 int main(int argc, char** argv)
 {
 	set_err_reporter(gui_err_reporter);
+	set_db_path(argv[0]);
 
 	QApplication app(argc, argv);
 	win wnd;
