@@ -11,6 +11,7 @@ int main(int argc, char** argv)
 	set_db_path(argv[0]);
 
 	if (argc == 1){
+		//no element was provided at startup, so we ask for one
 		printf("Please write a chemical formula:\n");
 		fgets(in, BUFSIZ, stdin);
 		size_t last = strlen(in) - 1;
@@ -36,6 +37,10 @@ int main(int argc, char** argv)
 	if (!process_input(in, evec))
 		//no errors returned
 		print_elems(evec);
+
+	printf("Press enter to exit. ");
+	//wait for enter
+	fgetc(stdin);
 	destroy_elem_vec(evec);
 	return 0;
 }
