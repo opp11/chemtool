@@ -38,9 +38,13 @@ int main(int argc, char** argv)
 		//No errors returned so print the element vector
 		print_elems(evec);
 
-	printf("Press enter to exit. ");
-	//Wait for enter
-	fgetc(stdin);
+	//If no commandline arguments were given we pause to give the user
+	//time to read the output.
+	if (argc == 1){
+		printf("Press enter to exit. ");
+		//Wait for enter
+		fgetc(stdin);
+	}
 	destroy_elem_vec(evec);
 	return 0;
 }
