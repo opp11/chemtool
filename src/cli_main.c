@@ -1,11 +1,13 @@
 #include "chemtool.h"
 
+#define BUFFERSIZE 8192
+
 //Prints the content of the provided elem_vec to the console nicely formatted.
 void print_elems(struct elem_vec *evec);
 
 int main(int argc, char** argv)
 {
-	char in[BUFSIZ];
+	char in[BUFFERSIZE];
 	struct elem_vec *evec;
 
 	set_db_path(argv[0]);
@@ -13,7 +15,7 @@ int main(int argc, char** argv)
 	if (argc == 1){
 		//No formula was provided at startup, so we ask for one
 		printf("Please write a chemical formula:\n");
-		fgets(in, BUFSIZ, stdin);
+		fgets(in, BUFFERSIZE, stdin);
 		size_t last = strlen(in) - 1;
 		//Abort without doing anything if the input is empty
 		if (last == 0)
@@ -25,7 +27,7 @@ int main(int argc, char** argv)
 
 		printf("--------------------------------------------------\n");
 	} else {
-		strncpy(in, argv[1], BUFSIZ);
+		strncpy(in, argv[1], BUFFERSIZE);
 	}
 
 	evec = create_elem_vec(in);

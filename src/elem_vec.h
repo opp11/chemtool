@@ -13,7 +13,7 @@ extern "C" {
 struct pe_elem {
 	char sname[4];
 	char lname[14];
-	int quant;
+	unsigned int quant;
 	double weight;
 };
 

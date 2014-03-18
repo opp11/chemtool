@@ -67,7 +67,7 @@ int parse_input(const char *in, struct elem_vec *evec)
 static int handle_num(int *pos, const char *in, struct pe_elem *crnt_elm)
 {
 	int i = 0;
-	char buffer[BUFSIZ] = {'\0'};
+	char buffer[11] = {'\0'};
 
 	if (*pos == 0){
 		//A chemical formula cannot start with a number (for now...),
@@ -79,12 +79,20 @@ static int handle_num(int *pos, const char *in, struct pe_elem *crnt_elm)
 
 	//Read all digits of the number
 	while (isdigit(in[*pos])){
+		if (i > 9){
+			print_err(EARGFMT, "cannot handle numbers greater than 2147483647");
+			return EARGFMT;
+		}
 		buffer[i] = in[*pos];
 		i++;
 		(*pos)++;
 	}
 
 	crnt_elm->quant = strtol(buffer, NULL, 10);
+	if (crnt_elm->quant < 0){
+		print_err(EARGFMT, "cannot handle numbers greater than 2147483647");
+		return EARGFMT;
+	}
 
 	return 0;
 }

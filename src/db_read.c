@@ -1,7 +1,10 @@
 #include "db_read.h"
 
+#define MAX_PATH_LEN 8192
+#define PROG_NAME_LEN strlen(db_name)
+
 static const char* db_name = "elemdb.csv";
-static char db_path[BUFSIZ] = "./elemdb.csv";
+static char db_path[MAX_PATH_LEN] = "./elemdb.csv";
 
 //Fills out the data fields of a single pe_elem struct
 //by reading from the 'elemdb' file
@@ -54,7 +57,7 @@ exit:
 int set_db_path(const char* path)
 {
 	int len = strlen(path);
-	char new_dir[BUFSIZ] = {0};
+	char new_dir[MAX_PATH_LEN] = {0};
 
 	//walk backwards through the path untill a seperator is found
 	while (len && path[len] != '/' && path[len] != '\\'){
@@ -63,7 +66,7 @@ int set_db_path(const char* path)
 	if (len == 0)
 		//no seperator found, so assume current dir
 		strcpy(new_dir, "./");
-	else if (len + strlen(db_name) + 2 < BUFSIZ)
+	else if (len + PROG_NAME_LEN + 2 < MAX_PATH_LEN)
 		//copy the first 'len + 1' chars of len which is the actual path
 		strncpy(new_dir, path, len + 1);
 	else 
@@ -78,7 +81,7 @@ int set_db_path(const char* path)
 static int get_single_data(struct pe_elem *elm, FILE *elemdb)
 {
 	int err = 0;
-	char tmp[BUFSIZ] = {0};
+	char tmp[64] = {0};
 
 	err = walk_to_elem(elm->sname, elemdb);
 	if (err)
