@@ -21,7 +21,7 @@ extern "C" {
  *will have the correct values in their fields.
  *
  *params:
- *	evec - Pointer to an array of pe_elem structs to fill out.
+ *	evec - Pointer to an elem_vec struct to fill out.
  *
  *returns:
  *	int - 0 on succes.
@@ -34,7 +34,7 @@ int get_elem_data(struct elem_vec *evec);
 /*
  *Sets the path to the directory containing the database. The function strips
  *the last word from the path (or untill a slash is encountered), so the program
- *path is a valid input. If no slash is encountered it assumes current 
+ *path is a valid input. If no slash is encountered it assumes the current 
  *directory. Returns 0 if succesfully set. If the path is too long the path
  *length is returned and the operation is aborted.
  *
@@ -43,7 +43,7 @@ int get_elem_data(struct elem_vec *evec);
  *
  *returns:
  *	int - 0 on succes.
- *	      Length of path.
+ *	      Length of path if path is too long.
  */
 int set_db_path(const char* path);
 

@@ -1,12 +1,12 @@
 #include "err_handling.h"
 
-//The standard error reporter. Simply prints the message to stderr
+/* The standard error reporter. Simply prints the message to stderr */
 static void std_report_err(int err, const char *msg)
 {
 	fprintf(stderr, "%s%s\n", get_base_err_msg(err), msg);
 }
 
-//Function pointer to error reporter. Points to std_report_err as default.
+/* Function pointer to error reporter. Points to std_report_err as default. */
 static void (*report_err)(int err, const char *msg) = std_report_err;
 
 void print_err(int err, const char* msg)

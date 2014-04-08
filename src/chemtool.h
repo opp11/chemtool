@@ -14,9 +14,9 @@ extern "C" {
 
 /*
  *Runs the chemtool program on the input string 'in' and stores the retrieved
- *data in the provided elem_vec. The elem_vec must have beem allocated by a
- *previous call to create_elem_vec. On any error it immediately aborts, 
- *prints an error message with print_err and returns the error code.
+ *data in the provided elem_vec. The elem_vec must have been allocated by a
+ *previous call to 'create_elem_vec'. On any error it immediately aborts, 
+ *prints an error message with 'print_err' and returns the error code.
  *
  *params:
  *	in   - The input string containing a chemical formula.
@@ -25,7 +25,7 @@ extern "C" {
  *returns:
  *	int - 0 on success.
  *	      EDBOPEN if the database file could not be found.
- *	      EFORMAT if the database file is not formatted right / corrupted.
+ *	      EDBFMT if the database file is not formatted right / corrupted.
  *	      EENAME if an element could not be found.
  *	      EARGFMT if the formula is formatted wrong.
  *	      EOOMEM on memory failure.
