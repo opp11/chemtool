@@ -30,7 +30,7 @@ struct elem_vec {
  *	in - The input string to be analysed.
  *
  *returns:
- *	struct elem_vec* - pointer to the allocated memory on success.
+ *	struct elem_vec* - Pointer to the allocated memory on success.
  *	                   NULL on failure.
  */
 struct elem_vec *create_elem_vec(const char *in);

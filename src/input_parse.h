@@ -12,14 +12,13 @@ extern "C" {
 
 /*
  *Parses the input string 'in' containing a chemical formula, and fills out
- *the array of pe_elem structs with the data. If an error is detected the
- *function aborts and returns an error code. The pe_elem structs filled out
- *before the error occured will have the correct data.
+ *the elem_vec struct with the data. If an error is detected the function
+ *aborts and returns an error code. The elem_vec struct filled out before
+ *the error occured will have the correct data.
  *
  *params:
- *	in       - Null terminated string containing the chemical formula.
- *	num_elms - The number elements to fill out.
- *	elms     - Array containing the pe_elem structs to fill out with data.
+ *	in   - Null terminated string containing the chemical formula.
+ *	evec - elem_vec struct containing the elements to fill out with data.
  *
  *returns:
  *	int - 0 on success.

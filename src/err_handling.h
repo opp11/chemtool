@@ -20,7 +20,7 @@ enum ERRCODE {
  *Prints an error message for the provided error code using the current
  *err_reporter. Per default this prints the error message to stderr. 
  *The provided msg is also appended after the standard error message 
- *to give more context.
+ *(from get_base_err_msg) to give more context.
  *
  *params:
  *	err - Error code to print a message for.
@@ -45,8 +45,8 @@ void set_err_reporter(void (*err_reporter)(int, const char*));
 
 /*
  *Gets a base error message for the provided error code. A returned error
- *message should be followed be another string giving more context to the error.
- *All returned error messaged end with a colon followed by a space (": ").
+ *message should be followed by another string giving more context to the error.
+ *All returned error messages end with a colon followed by a space (": ").
  *
  *params:
  *	err - The error code to generate a message for.
