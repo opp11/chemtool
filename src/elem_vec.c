@@ -44,7 +44,7 @@ int shorten_elem_vec(struct elem_vec *evec)
 	int new_size = evec->size;
 	struct pe_elem *new_elms;
 
-	//Attempt to the dublicates of all elements in the vector
+	//Attempt to group the dublicates of all elements in the vector
 	while (crnt_e < evec->size){
 		new_size -= group_dublicates(crnt_e, evec);
 		crnt_e++;
@@ -53,7 +53,7 @@ int shorten_elem_vec(struct elem_vec *evec)
 		//No elements were grouped so no need to shorten
 		return 0;
 
-	//Allocate new internal array of pe_elems and if that fails abort
+	//Allocate new internal array of pe_elems, and if that fails abort
 	new_elms = (struct pe_elem*)calloc(new_size, sizeof(struct pe_elem));
 	if (!new_elms){
 		print_err(EOOMEM, "not enough unused RAM.");

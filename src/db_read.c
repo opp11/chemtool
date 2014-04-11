@@ -1,7 +1,7 @@
 #include "db_read.h"
 
 #define MAX_PATH_LEN 8192
-#define PROG_NAME_LEN strlen(db_name)
+#define DB_NAME_LEN strlen(db_name)
 
 static const char* db_name = "elemdb.csv";
 static char db_path[MAX_PATH_LEN] = "./elemdb.csv";
@@ -66,7 +66,7 @@ int set_db_path(const char* path)
 	if (len == 0)
 		//no seperator found, so assume current dir
 		strcpy(new_dir, "./");
-	else if (len + PROG_NAME_LEN + 2 < MAX_PATH_LEN)
+	else if (len + DB_NAME_LEN + 2 < MAX_PATH_LEN)
 		//copy the first 'len + 1' chars of len which is the actual path
 		strncpy(new_dir, path, len + 1);
 	else 

@@ -153,6 +153,8 @@ static int handle_end_paren(int *pos, const char *in, struct pe_elem *crnt_elm)
 	//Get the value of the multiplier for this paren now,
 	//so we can apply it later
 	if (isdigit(in[*pos])){
+		//Make temporary pe_elem struct so we can use 'handle_num'
+		//to get the number
 		struct pe_elem tmp;
 		handle_num(pos, in, &tmp);
 		mult = tmp.quant;

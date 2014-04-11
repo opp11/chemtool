@@ -56,7 +56,7 @@ int shorten_elem_vec(struct elem_vec *evec);
  *params:
  *	vec - Pointer to the elem_vec struct to free.
  *
- *return:
+ *returns:
  *	void
  */
 void destroy_elem_vec(struct elem_vec *vec);
