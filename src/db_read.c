@@ -1,7 +1,6 @@
 #include "db_read.h"
 
 #define MAX_PATH_LEN 8192
-#define DB_NAME_LEN strlen(db_name)
 
 static const char* db_name = "elemdb.csv";
 static char db_path[MAX_PATH_LEN] = "./elemdb.csv";
@@ -39,18 +38,18 @@ int get_elem_data(struct elem_vec *evec)
 	int err = 0;
 
 	elemdb = fopen(db_path, "r");
-	/* abort on failure to open */
+	/* Abort on failure to open */
 	if (!elemdb){
 		print_err(EDBOPEN, db_path);
-		/* direct return to avoid call to fclose */
+		/* Direct return to avoid call to fclose */
 		return EDBOPEN;
 	}
 
-	/* get the data for all elements */
+	/* Get the data for all elements */
 	for (; i < evec->size; i++){
 		err = get_single_data(&evec->elms[i], elemdb);
 		
-		/* abort if an error was returned */
+		/* Abort if an error was returned */
 		if (err)
 			goto exit;
 	}
@@ -65,19 +64,23 @@ int set_db_path(const char* path)
 	int len = strlen(path);
 	char new_dir[MAX_PATH_LEN] = {0};
 
-	/* walk backwards through the path untill a seperator is found */
+	/* Walk backwards through the path untill a seperator is found */
 	while (len && path[len] != '/' && path[len] != '\\'){
 		len--;
 	}
-	if (len == 0)
-		/* no seperator found, so assume current dir */
+	if (len == 0){
+		/* No seperator found, so assume current dir */
 		strcpy(new_dir, "./");
-	else if (len + DB_NAME_LEN + 2 < MAX_PATH_LEN)
-		/* copy the first 'len + 1' chars of len which is the actual path */
-		strncpy(new_dir, path, len + 1);
-	else 
-		/* return error if the path is too large */
+	/* Check if the path is too long. We add 2 to allow room for a path */
+	/* seperator and a null char. */
+	} else if (len + strlen(db_name) + 2 < MAX_PATH_LEN){
+		/* Copy the first 'len + 1' chars of path, */ 
+		/* which is the actual path */
+		strncpy(new_dir, path, len + 1);	
+	} else {
+		/* Return error if the path is too large */
 		return len;
+	}
 
 	sprintf(db_path, "%s%s", new_dir, db_name);
 
@@ -97,15 +100,15 @@ static int get_single_data(struct pe_elem *elm, FILE *elemdb)
 	if (err)
 		return err;
 
-	/* read the weigth of the element */
+	/* Read the weigth of the element */
 	fscanf(elemdb, "%[^;]", tmp);
 	elm->weight = str_to_double(tmp);
 
 	err = confirm_seperator(elemdb);
-	if (err)
+	if (err){
 		return err;
-
-	/* read the full name of the element */
+	}
+	/* Read the full name of the element */
 	fscanf(elemdb, "%[^;]", elm->lname);
 
 	return 0;
@@ -118,18 +121,22 @@ static int walk_to_elem(char name[4], FILE *elemdb)
 	char* resp;
 
 	resp = fgets(raw, 4, elemdb);
-	/* walk untill the names match */
+	/* Walk untill the names match */
 	while (strncmp(name, raw, 3)){
 		to_next_line(elemdb, 0);
 		if (!resp){
+			/* 
+			 *We have reached EOF. Since we might have continued
+			 *the walk from a previous element, we check if we have
+			 *done a rewind. If no, then we might not have read the
+			 *entire file, and thus we rewind. If yes, then we have
+			 *definately read the entire file and the element is 
+			 *not in it, so we report an error.
+			 */
 			if (!did_rewind){
-				/* first time we reach EOF, so we might not have */
-				/* read the whole file */
 				rewind(elemdb);
 				did_rewind = 1;
-			} else { 
-				/* this is the second time we have walked the file*/
-				/* so abort and print error message. */
+			} else {
 				print_err(EENAME, name);
 				return EENAME;
 			}
@@ -143,12 +150,12 @@ static int walk_to_elem(char name[4], FILE *elemdb)
 static void to_next_line(FILE *f, int offset)
 {
 	char crnt;
-	/* walk to next line or end of file */
+	/* Walk to next line or end of file */
 	do {
 		crnt = fgetc(f);
 	} while (crnt != '\n' && crnt != EOF);
 	
-	/* walk to offset */
+	/* Walk to offset */
 	if (crnt != EOF){
 		while (offset--){
 			fgetc(f);
@@ -167,11 +174,11 @@ static double str_to_double(char* str)
 			divide *= 10.0;
 		}
 		if (isdigit(*str)){
-			/* met a digit */
+			/* Met a digit */
 			digits *= 10.0;
 			digits += ((*str) - '0');
 		} else if ((*str) == '.' || (*str) == ','){
-			/* met a dot or comma */
+			/* Met a dot or comma */
 			met_dot = 1;
 		}
 		str++;
