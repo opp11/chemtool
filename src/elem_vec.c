@@ -29,8 +29,8 @@ struct elem_vec *create_elem_vec(const char* in)
 		return NULL;
 	}
 
-	/* Then try to allocate the elem_vec. If that fails then deallocate the */
-	/* pe_elems and abort. */
+	/* Then try to allocate the elem_vec. */
+	/* If that fails then deallocate the pe_elems and abort. */
 	out = (struct elem_vec*)malloc(sizeof(struct elem_vec));
 	if (out){
 		out->size = ecount;
@@ -112,8 +112,8 @@ static int group_dublicates(int crnt_e, struct elem_vec *vec)
 	/* Walk all elements after this one */
 	while (i < vec->size){
 		if (!strncmp(vec->elms[crnt_e].sname, vec->elms[i].sname, 3)){
-			/* Names match so tansfer the quant field, and mark this */
-			/* element. */
+			/* Names match so tansfer the quant field, */
+			/* and mark this element. */
 			vec->elms[crnt_e].quant += vec->elms[i].quant;
 			vec->elms[i].quant = 0;
 			out++;

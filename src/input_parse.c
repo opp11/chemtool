@@ -78,7 +78,7 @@ static int handle_num(int *pos, const char *in, struct pe_elem *crnt_elm)
 	char buffer[11] = {'\0'};
 
 	if (*pos == 0){
-		/* A chemical formula cannot start with a number (for now...), */
+		/* A chemical formula cannot start with a number (for now...) */
 		/* so abort and return argument format error */
 		print_err(EARGFMT, 
 			"the chemical formula cannot begin with a number.");
@@ -139,8 +139,9 @@ static int handle_elem(int *pos, const char *in, struct pe_elem *crnt_elm)
 static int handle_start_paren(int *pos, const char *in)
 {
 	(*pos)++;
-	/* Check if the character following the is a capital letter and therefore */
-	/* the start of a new element. If not print error message and abort. */
+	/* Check if the character following the paren is a capital letter */
+	/* and therefore the start of a new element. */
+	/* If not print error message and abort. */
 	if (isupper(in[*pos])){
 		return 0;
 	} else {

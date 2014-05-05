@@ -1,3 +1,4 @@
+#include <stdio.h>
 #include "chemtool.h"
 
 #define BUFFERSIZE 8192
