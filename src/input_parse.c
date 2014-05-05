@@ -166,7 +166,11 @@ static int handle_end_paren(int *pos, const char *in, struct pe_elem *crnt_elm)
 		struct pe_elem tmp;
 		handle_num(pos, in, &tmp);
 		mult = tmp.quant;
-	}		
+	} else {
+		/* If there is no number following, the multiplier is 1. */
+		/* Therefore there is no reason to continue */
+		return 0;
+	}
 
 	/* Walk backwards through the input string untill that matching */
 	/* start paren is found. */
@@ -191,9 +195,6 @@ static int handle_end_paren(int *pos, const char *in, struct pe_elem *crnt_elm)
 
 static void apply_paren_mult(int mult, int elm_count, struct pe_elem *crnt_elm)
 {
-	if (mult == 1)
-		/* No reason to multiply by 1. */
-		return;
 	/* Apply the multiplier on all affected elements. */
 	while (elm_count){
 		crnt_elm->quant *= mult;
