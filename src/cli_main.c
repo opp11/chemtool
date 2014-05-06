@@ -28,21 +28,22 @@ int main(int argc, char** argv)
 
 		printf("--------------------------------------------------\n");
 	} else {
+		/* Formula was given, so copy it into 'in'. */
 		strncpy(in, argv[1], BUFFERSIZE);
 	}
 
 	evec = create_elem_vec(in);
 	if (!evec){
-		/* Could not allocate */
-		print_err(EOOMEM, "not enough unused RAM.");
+		/* Could not allocate, so abort. */
 		return 0;
 	}
-	if (!process_input(in, evec))
+	if (!process_input(in, evec)){
 		/* No errors returned, so print the element vector */
 		print_elems(evec);
+	}
 
-	/* If no commandline arguments were given we pause to give the user */
-	/* time to read the output. */
+	/* If no commandline arguments were given we pause */
+	/* to give the user time to read the output. */
 	if (argc == 1){
 		printf("Press enter to exit. ");
 		/* Wait for enter */
