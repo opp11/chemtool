@@ -22,8 +22,10 @@ how to use the flags.  The program is invoked as following:
 
 	chemtool [FORMULA] [-s] [-q]
 
-Arguments:
+#### Arguments:
+
 	FORMULA
+	
 The chemical formula to parse. It can only contain letters,
 number and parentheses. All elements must begin with a capital
 letter (Na, He, U, etc.). The formula cannot begin with 
@@ -32,16 +34,21 @@ seperating them with a space. If no elements are given
 the program will ask for one.
 
 Some examples:
+
 	H2O
 	CH3CH2CH2CH2CH2CH3
 	CH3(CH2)4CH3       <-- same as above
 	NaCl H2O CH4       <-- more than one element
 
+#### Flags:
+
 	-s
+	
 Sparse output. Only print the resulting molar mass
 for each element.
 
 	-q
+	
 Disable any promts. Only has any effect if the program has to
 ask for a formula. Use this to make piping more smooth,
 as the program will not wait after printing the output, and 
