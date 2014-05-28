@@ -20,31 +20,32 @@ Manual
 This will explain how the console version of the program is run, as well as
 how to use the flags.  The program is invoked as following:
 
-chemtool [FORMULA] [-s] [-q]
+	chemtool [FORMULA] [-s] [-q]
 
+Arguments:
 	FORMULA
-		The chemical formula to parse. It can only contain letters,
-		number and parentheses. All elements must begin with a capital
-		letter (Na, He, U, etc.). The formula cannot begin with 
-		a number. Note that you can supply more than one element by
-		seperating them with a space. If no elements are given
-		the program will ask for one.
+The chemical formula to parse. It can only contain letters,
+number and parentheses. All elements must begin with a capital
+letter (Na, He, U, etc.). The formula cannot begin with 
+a number. Note that you can supply more than one element by
+seperating them with a space. If no elements are given
+the program will ask for one.
 
-		Some examples:
-			H2O
-			CH3CH2CH2CH2CH2CH3
-			CH3(CH2)4CH3       <-- same as above
-			NaCl H2O CH4       <-- more than one element
+Some examples:
+	H2O
+	CH3CH2CH2CH2CH2CH3
+	CH3(CH2)4CH3       <-- same as above
+	NaCl H2O CH4       <-- more than one element
 
 	-s
-		Sparse output. Only print the resulting molar mass
-		for each element.
+Sparse output. Only print the resulting molar mass
+for each element.
 
 	-q
-		Disable any promts. Only has any effect if the program has to
-		ask for a formula. Use this to make piping more smooth,
-		as the program will not wait after printing the output, and 
-		will not print a message asking for a formula.
+Disable any promts. Only has any effect if the program has to
+ask for a formula. Use this to make piping more smooth,
+as the program will not wait after printing the output, and 
+will not print a message asking for a formula.
 
 How to build
 ------------------------------------------------------------------------------
