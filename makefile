@@ -1,48 +1,82 @@
-#Compilers
-CC:=cc
-CXX:=g++
+# general dirs
+SRC_DIR:=src
+OUT_DIR:=bin
+OBJ_DIR:=$(OUT_DIR)/obj
 
-#Source file dir
-SRCDIR:=src
+# base files and dirs
+BASE_DIR:=$(SRC_DIR)/base
+BASE_SRC:=$(wildcard $(BASE_DIR)/*.c)
+BASE_OBJ:=$(addprefix $(OBJ_DIR)/, $(notdir $(BASE_SRC:.c=.o)))
 
-#Files to compiled.
-GUIFILES:=$(SRCDIR)/gui_main.cpp $(SRCDIR)/gui_main.h $(SRCDIR)/moc_gui_main.cpp
-CLIFILES:=$(SRCDIR)/cli_main.c
-FILES:=$(wildcard $(SRCDIR)/*.c src/*.h) 
-FILES:=$(filter-out $(GUIFILES) $(CLIFILES), $(FILES))
+#commandline version files and dirs
+CLI_DIR:=$(SRC_DIR)/cli
+CLI_SRC:=$(wildcard $(CLI_DIR)/*.c)
+CLI_OBJ:=$(addprefix $(OBJ_DIR)/, $(notdir $(CLI_SRC:.c=.o)))
 
-#Qt variables
-QINCPATH:=-I/usr/include/qt4/ -I/usr/include/qt4/QtCore -I/usr/include/qt4/QtGui
-QLIBPATH:=-lQtGui -lQtCore
+#gui version files and dirs
+GUI_DIR:=$(SRC_DIR)/gui
+GUI_HDR:=$(wildcard $(GUI_DIR)/*.h)
+GUI_MOC:=$(addprefix $(GUI_DIR)/moc_, $(notdir $(GUI_HDR:.h=.cpp)))
+GUI_SRC:=$(filter-out $(GUI_MOC), $(wildcard $(GUI_DIR)/*.cpp)) $(GUI_MOC)
+GUI_OBJ:=$(addprefix $(OBJ_DIR)/, $(notdir $(GUI_SRC:.cpp=.o)))
+
+# C compiler
+CC:=gcc
+CC_FLAGS:= -Wall -c -I $(BASE_DIR)
+LC_FLAGS:= -Wall -I $(BASE_DIR)
+
+# Qt specifics
+Q_INC:=-I/usr/include/qt4/ -I/usr/include/qt4/QtCore -I/usr/include/qt4/QtGui
+Q_LIB:=-lQtGui -lQtCore
 QMOC:=/usr/bin/moc-qt4
 
-#Output directory
-#Use '.' to output to current directory
-OUTDIR:=bin
+# C++ compiler
+CXX:=g++
+CXX_FLAGS:=-Wall -c -std=c++11 $(Q_INC) $(Q_LIB) -I $(BASE_DIR)
+LXX_FLAGS:=-Wall -std=c++11 $(Q_INC) $(Q_LIB) -I $(BASE_DIR)
 
-#Compiler flags
-CCFLAGS:=-Wall
-CXXFLAGS:=-Wall --std=c++11
+# default
+all: chemtool
 
-#If no target is specified report an error
-all:
-	$(error No target selected)
+# make the commandline version
+chemtool: base $(CLI_OBJ)
+	$(CC) $(LC_FLAGS) -o $(OUT_DIR)/$@ $(BASE_OBJ) $(CLI_OBJ)
 
-#Remove all compiled files from OUTDIR
-clean:
-	rm -rf $(filter-out $(OUTDIR)/elemdb.csv, $(wildcard $(OUTDIR)/*))
+$(OBJ_DIR)/%.o: $(CLI_DIR)/%.c
+	$(CC) $(CC_FLAGS) -o $@ $<
 
-#Normal commandline build
-cli:
-	$(CC) $(FILES) $(CLIFILES) $(CCFLAGS) -o $(OUTDIR)/chemtool
+# make the gui version
+gchemtool: base qmoc $(GUI_OBJ)
+	$(CXX) $(LXX_FLAGS) -o $(OUT_DIR)/$@ $(BASE_OBJ) $(GUI_OBJ)
 
-#Commandline debug build - use '$ make dbg'
-cli_dbg:
-	$(CC) $(FILES) $(CLIFILES) $(SRCDIR)/cli_main.c $(CCFLAGS) -g -o $(OUTDIR)/chemtool
+$(OBJ_DIR)/%.o: $(GUI_DIR)/%.cpp
+	$(CXX) $(CXX_FLAGS) -o $@ $<
 
-#Gui build
-gui: qt_moc
-	$(CXX) $(FILES) $(GUIFILES) $(QINCPATH) $(QLIBPATH) $(CXXFLAGS) -o $(OUTDIR)/gchemtool
-	rm -f $(SRCDIR)/moc_gui_main.cpp
-qt_moc:
-	$(QMOC) $(SRCDIR)/gui_main.h $(QINCPATH) -o $(SRCDIR)/moc_gui_main.cpp
+# make the base object files
+base: $(BASE_OBJ)
+
+$(OBJ_DIR)/%.o: $(BASE_DIR)/%.c
+	$(CC) $(CC_FLAGS) -o $@ $<
+
+# run qt-moc
+qmoc: $(GUI_MOC)
+
+$(GUI_DIR)/moc_%.cpp: $(GUI_DIR)/%.h
+	$(QMOC) $< -o $@
+
+# remove all files genereated by the compiler
+clean: objclean mocclean gchclean
+	rm -rf $(filter-out $(OUT_DIR)/elemdb.csv $(OBJ_DIR), \
+		$(wildcard $(OUT_DIR)/*))
+
+# remove all object files
+objclean:
+	rm -rf $(wildcard $(OBJ_DIR)/*)
+
+# remove all files made by qt-moc
+mocclean:
+	rm -f $(wildcard $(GUI_DIR)/moc_*.cpp)
+
+# remove all .gch files
+gchclean:
+	rm -f $(wildcard $(BASE_DIR)/*.gch)
