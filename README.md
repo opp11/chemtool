@@ -58,6 +58,8 @@ How to build
 ------------------------------------------------------------------------------
 To build the command line version, navigate to the parent directory and call
 
-	make cli
+	make chemtool
 
-To build the gui version you are probably better off just doing it yourself.
+To build the gui version you will need the Qt libs and qt-moc. Furthermore, you might need to change some paths in the makefile for the Qt specific stuff, but after that you should be able to build it with
+
+	make gchemtool
